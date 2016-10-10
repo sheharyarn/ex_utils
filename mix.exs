@@ -1,14 +1,15 @@
 defmodule ExUtils.Mixfile do
   use Mix.Project
 
+  @app     :ex_utils
   @name    "ExUtils"
   @version "0.1.0"
-  @github  "https://github.com/sheharyarn/ex_utils"
+  @github  "https://github.com/sheharyarn/#{@app}"
 
   def project do
     [
       # Project
-      app:          :ex_utils,
+      app:          @app,
       version:      @version,
       elixir:       "~> 1.0",
       description:  description(),
@@ -21,7 +22,7 @@ defmodule ExUtils.Mixfile do
       homepage_url: @github,
       docs: [
         main:       @name,
-        canonical:  "https://hexdocs.com/ex_utils",
+        canonical:  "https://hexdocs.com/#{@app}",
         extras:     ["README.md"]
       ]
     ]
@@ -43,7 +44,7 @@ defmodule ExUtils.Mixfile do
 
   defp package do
     [
-      name: :ecto_rut,
+      name: @app,
       maintainers: ["Sheharyar Naseer"],
       licenses: ["MIT"],
       files: ~w(mix.exs lib README.md),
