@@ -28,4 +28,13 @@ defmodule ExUtils.Tests.Map do
     assert map[:b]["c"] == 3
     assert map[:b]["d"] == 4
   end
+
+  test "atomize_keys only symbolizes strings" do
+    map = ExUtils.Map.atomize_keys(%{"a" => 0, 3 => 6, :atom => "13", {:a, :b} => 5})
+
+    assert map[:a]       == 0
+    assert map[3]        == 6
+    assert map[:atom]    == "13"
+    assert map[{:a, :b}] == 5
+  end
 end

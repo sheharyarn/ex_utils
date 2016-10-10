@@ -6,7 +6,7 @@ defmodule ExUtils.Map do
 
   def atomize_keys(map, [recursive: false]) do
     Enum.reduce map, %{}, fn {k, v}, m ->
-      Map.put(m, String.to_atom(k), v)
+      map_put(m, k, v)
     end
   end
 
@@ -21,7 +21,14 @@ defmodule ExUtils.Map do
           v
         end
 
-      Map.put(m, String.to_atom(k), v)
+      map_put(m, k, v)
+    end
+  end
+
+  defp map_put(m, k, v) do
+    cond do
+      is_binary(k) -> Map.put(m, String.to_atom(k), v)
+      true         -> Map.put(m, k, v)
     end
   end
 
