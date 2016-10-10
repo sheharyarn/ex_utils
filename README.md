@@ -1,24 +1,56 @@
-# ExUtils
+ExUtils
+=======
 
-**TODO: Add description**
+> :zap: Collection of Awesome Elixir shortcuts and utilities :zap:
+
+(Still a Work in Progress :stuck_out_tongue:)
+
+
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
+```elixir
+def deps do
+  [{:ex_utils, "~> 0.1.0"}]
+end
+```
 
-  1. Add `ex_utils` to your list of dependencies in `mix.exs`:
+Or if you want the latest stuff:
 
-    ```elixir
-    def deps do
-      [{:ex_utils, "~> 0.1.0"}]
-    end
-    ```
+```elixir
+def deps do
+  [{:ex_utils, git: "https://github.com/sheharyarn/ex_utils.git"}]
+end
+```
 
-  2. Ensure `ex_utils` is started before your application:
 
-    ```elixir
-    def application do
-      [applications: [:ex_utils]]
-    end
-    ```
 
+## Roadmap
+
+ - [ ] Write missing Tests and Documentation
+ - [ ] Provide better integration with core Elixir Modules
+ - [ ] Keep adding more awesome shortcuts and utilities
+
+
+
+## Contributing
+
+ - [Fork][github-fork], Enhance, Send PR
+ - Lock issues with any bugs or feature requests
+ - Implement something from Roadmap
+ - Spread the word
+
+
+
+## License
+
+This package is available as open source under the terms of the [MIT License][license].
+
+
+
+  [license]:          http://opensource.org/licenses/MIT
+
+  [github-fork]:      https://github.com/sheharyarn/ex_utils/fork
+
+  [hexpm]:            https://hex.pm/packages/ex_utils
+  [docs]:             https://hexdocs.pm/ex_utils/ExUtils.html
