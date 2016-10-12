@@ -16,6 +16,7 @@ defmodule ExUtils do
   ExUnit.is_struct?(%Person{name: "Ali"})   # => true
   ```
   """
+  @spec is_struct?(term :: term) :: boolean
   def is_struct?(term)
   def is_struct?(%{__struct__: _}), do: true
   def is_struct?(_),                do: false
@@ -31,6 +32,7 @@ defmodule ExUtils do
   ExUtils.is_pure_map?(%Person{name: "Ali"})   # => false
   ```
   """
+  @spec is_pure_map?(term :: term) :: boolean
   def is_pure_map?(term) do
     is_map(term) && !is_struct?(term)
   end

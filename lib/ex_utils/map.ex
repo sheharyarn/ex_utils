@@ -30,6 +30,7 @@ defmodule ExUtils.Map do
   #=> %{a: 1, b: %{"c" => 3, "d" => 4}}
   ```
   """
+  @spec atomize_keys(map :: Map.t, opts :: Keyword.t) :: Map.t
   def atomize_keys(map, opts \\ [])
   def atomize_keys(map, [recursive: false]) do
     Enum.reduce map, %{}, fn {k, v}, m ->
