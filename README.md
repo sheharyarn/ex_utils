@@ -11,7 +11,7 @@ ExUtils
 
 ```elixir
 def deps do
-  [{:ex_utils, "~> 0.1.1"}]
+  [{:ex_utils, "~> 0.1.2"}]
 end
 ```
 
@@ -27,7 +27,7 @@ end
 
 ## Roadmap
 
- - [ ] Write missing Tests and Documentation
+ - [x] Write missing Tests and Documentation
  - [ ] Provide better integration with core Elixir Modules
  - [ ] Keep adding more awesome shortcuts and utilities
 
