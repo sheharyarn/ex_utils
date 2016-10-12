@@ -36,5 +36,30 @@ defmodule ExUtils do
   def is_pure_map?(term) do
     is_map(term) && !is_struct?(term)
   end
+
+
+  @doc """
+  Checks if a Module exports a specific method
+
+  First argument must be a Module and the second argument can
+  either be an `:atom` name of the function or a `{:atom, arity}`
+  tuple
+
+  ## Example
+
+  ```
+  ExUtils.has_method?(Map, :keys)         # => true
+  ExUtils.has_method?(Map, {:keys, 1})    # => true
+  ExUtils.has_method?(Map, {:keys, 2})    # => false
+  ```
+  """
+  @spec has_method?(module :: module, method :: atom | tuple :: {atom, number}) :: boolean
+  def has_method?(module, method) when is_atom(method) do
+    module.__info__(:functions)[method] != nil
+  end
+
+  def has_method?(module, {method, arity}) when is_atom(method) do
+    module.__info__(:functions)[method] == arity
+  end
 end
 
