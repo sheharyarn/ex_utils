@@ -4,7 +4,7 @@ defmodule ExUtils.Tests.Core do
   defmodule Person do
     defstruct [:name, :age]
 
-    def old?(person), do: person.age > 60
+    def old?(person, threshold \\ 60), do: person.age > threshold
   end
 
   setup do
@@ -24,8 +24,10 @@ defmodule ExUtils.Tests.Core do
   test "has_method? returns true if method exists for module" do
     assert ExUtils.has_method?(Person, :old?)      == true
     assert ExUtils.has_method?(Person, {:old?, 1}) == true
+    assert ExUtils.has_method?(Person, {:old?, 2}) == true
 
     assert ExUtils.has_method?(Person, :unknown)   == false
-    assert ExUtils.has_method?(Person, {:old?, 2}) == false
+    assert ExUtils.has_method?(Person, {:old?, 0}) == false
+    assert ExUtils.has_method?(Person, {:old?, 3}) == false
   end
 end

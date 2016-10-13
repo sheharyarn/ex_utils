@@ -53,13 +53,13 @@ defmodule ExUtils do
   ExUtils.has_method?(Map, {:keys, 2})    # => false
   ```
   """
-  @spec has_method?(module :: module, method :: atom | tuple :: {atom, number}) :: boolean
+  @spec has_method?(module :: module, method :: atom | {atom, number}) :: boolean
   def has_method?(module, method) when is_atom(method) do
-    module.__info__(:functions)[method] != nil
+    Keyword.has_key?(module.__info__(:functions), method)
   end
 
   def has_method?(module, {method, arity}) when is_atom(method) do
-    module.__info__(:functions)[method] == arity
+    :erlang.function_exported(module, method, arity)
   end
 end
 
