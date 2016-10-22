@@ -38,28 +38,8 @@ defmodule ExUtils do
   end
 
 
-  @doc """
-  Checks if a Module exports a specific method
+  # Delegated Methods
 
-  First argument must be a Module and the second argument can
-  either be an `:atom` name of the function or a `{:atom, arity}`
-  tuple
-
-  ## Example
-
-  ```
-  ExUtils.has_method?(Map, :keys)         # => true
-  ExUtils.has_method?(Map, {:keys, 1})    # => true
-  ExUtils.has_method?(Map, {:keys, 2})    # => false
-  ```
-  """
-  @spec has_method?(module :: module, method :: atom | {atom, number}) :: boolean
-  def has_method?(module, method) when is_atom(method) do
-    Keyword.has_key?(module.__info__(:functions), method)
-  end
-
-  def has_method?(module, {method, arity}) when is_atom(method) do
-    :erlang.function_exported(module, method, arity)
-  end
+  defdelegate has_method?(module, method), to: ExUtils.Module
 end
 
