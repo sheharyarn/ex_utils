@@ -25,6 +25,18 @@ end
 
 
 
+## Awesome Methods
+
+It's not possible to list all functions here, but you should check out the
+[Documentation][docs]! `ExUtils` has been divided into sub-modules, each
+with their own utility methods for different kinds of data:
+
+ - [`ExUtils`][docs] - Core Module with generic methods that fit everything
+ - [`ExUtils.Map`][docs-map] - Utility methods for Maps
+ - [`ExUtils.Module`][docs-module] - Utility methods for Modules themselves
+
+
+
 ## Roadmap
 
  - [x] Write missing Tests and Documentation
@@ -49,8 +61,10 @@ This package is available as open source under the terms of the [MIT License][li
 
 
   [license]:          http://opensource.org/licenses/MIT
-
   [github-fork]:      https://github.com/sheharyarn/ex_utils/fork
 
   [hexpm]:            https://hex.pm/packages/ex_utils
   [docs]:             https://hexdocs.pm/ex_utils/ExUtils.html
+  [docs-map]:         https://hexdocs.pm/ex_utils/ExUtils.Map.html
+  [docs-module]:      https://hexdocs.pm/ex_utils/ExUtils.Module.html
+
