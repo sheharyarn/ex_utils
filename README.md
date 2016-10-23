@@ -11,7 +11,7 @@ ExUtils
 
 ```elixir
 def deps do
-  [{:ex_utils, "~> 0.1.2"}]
+  [{:ex_utils, "~> 0.1.3"}]
 end
 ```
 
