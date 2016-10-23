@@ -4,6 +4,33 @@ defmodule ExUtils.Module do
   """
 
 
+
+  @doc """
+  Returns a Keyword List of all methods of a module
+
+  Calling `methods` on Module will return a `{:atom, arity}` Keyword
+  List of all the functions of that module.
+
+  You can also use these other aliases of this method:
+
+   - `ExUtils.methods/1`
+   - `ExUtils.functions/1`
+   - `ExUtils.Module.functions/1`
+
+  ## Example
+
+  ```
+  ExUtils.functions(List)
+  # => [delete: 2, delete_at: 2, duplicate: 2, flatten: 1, flatten: 2, ...]
+  ```
+  """
+  @spec methods(module :: module) :: Keyword.t
+  def methods(module) do
+    module.__info__(:functions)
+  end
+
+
+
   @doc """
   Checks if a Module exports a specific method
 
@@ -23,10 +50,15 @@ defmodule ExUtils.Module do
   """
   @spec has_method?(module :: module, method :: atom | {atom, number}) :: boolean
   def has_method?(module, method) when is_atom(method) do
-    Keyword.has_key?(module.__info__(:functions), method)
+    Keyword.has_key?(methods(module), method)
   end
 
   def has_method?(module, {method, arity}) when is_atom(method) do
     :erlang.function_exported(module, method, arity)
   end
+
+
+  ## Delegated Methods
+
+  defdelegate functions(module), to: __MODULE__, as: :methods
 end
