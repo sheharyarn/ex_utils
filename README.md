@@ -11,7 +11,7 @@ ExUtils
 
 ```elixir
 def deps do
-  [{:ex_utils, "~> 0.1.3"}]
+  [{:ex_utils, "~> 0.1.4"}]
 end
 ```
 
@@ -34,6 +34,7 @@ with their own utility methods for different kinds of data:
  - [`ExUtils`][docs] - Core Module with generic methods that fit everything
  - [`ExUtils.Map`][docs-map] - Utility methods for Maps
  - [`ExUtils.Module`][docs-module] - Utility methods for Modules themselves
+ - [`ExUtils.Keyword`][docs-keyword] - Utility methods for Elixir Keyword types
 
 
 
@@ -67,4 +68,5 @@ This package is available as open source under the terms of the [MIT License][li
   [docs]:             https://hexdocs.pm/ex_utils/ExUtils.html
   [docs-map]:         https://hexdocs.pm/ex_utils/ExUtils.Map.html
   [docs-module]:      https://hexdocs.pm/ex_utils/ExUtils.Module.html
+  [docs-keyword]:      https://hexdocs.pm/ex_utils/ExUtils.Keyword.html
 
