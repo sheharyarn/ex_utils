@@ -5,6 +5,17 @@ defmodule ExUtils.Module do
 
 
 
+  @doc """
+  Returns a String of the Module's name (without the Elixir namespace)
+
+  ## Example
+
+  ```
+  ExUtils.Module.name(SomeModule)       # => "SomeModule"
+  ExUtils.Module.name(Another.Module)   # => "Another.Module"
+  ```
+  """
+  @spec name(module :: module) :: String.t
   def name(module) do
     module |> Module.split |> Enum.join(".")
   end
