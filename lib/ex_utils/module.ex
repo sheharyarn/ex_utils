@@ -5,6 +5,12 @@ defmodule ExUtils.Module do
 
 
 
+  def name(module) do
+    module |> Module.split |> Enum.join(".")
+  end
+
+
+
   @doc """
   Returns a Keyword List of all methods of a module
 
