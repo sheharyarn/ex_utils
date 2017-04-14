@@ -4,7 +4,7 @@ defmodule ExUtils.Integer do
   """
 
   @byte_size 1024
-  @filesizes [Bytes: 0, KB: 1, MB: 2, GB: 3, TB: 4, PB: 5, EB: 6, ZB: 7, YB: 8]
+  @filesizes [KB: 1, MB: 2, GB: 3, TB: 4, PB: 5, EB: 6, ZB: 7, YB: 8]
 
 
 
@@ -21,17 +21,16 @@ defmodule ExUtils.Integer do
   """
   @spec to_filesize(number :: integer) :: String.t
   def to_filesize(number) when is_integer(number) do
-    Enum.find_value(@filesizes, fn {name, power} ->
-      cond do
-        number < @byte_size ->
-          "#{number} #{name}"
+    if number < @byte_size do
+      "#{number} Bytes"
 
-        number < :math.pow(@byte_size, power + 1) ->
+    else
+      Enum.find_value(@filesizes, fn {name, power} ->
+        if number < :math.pow(@byte_size, power + 1) do
           "#{Float.round(number / :math.pow(@byte_size, power), 2)} #{name}"
-
-        true -> nil
-      end
-    end)
+        end
+      end)
+    end
   end
 
 end
