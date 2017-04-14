@@ -33,7 +33,10 @@ defmodule ExUtils.Mixfile do
   end
 
   defp deps do
-    [{:ex_doc, ">= 0.0.0", only: :dev}]
+    [
+      {:ex_doc,  ">= 0.0.0", only: :dev },
+      {:inch_ex, ">= 0.0.0", only: :docs}
+    ]
   end
 
   defp description do
