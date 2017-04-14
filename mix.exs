@@ -11,7 +11,7 @@ defmodule ExUtils.Mixfile do
       # Project
       app:          @app,
       version:      @version,
-      elixir:       "~> 1.0",
+      elixir:       "~> 1.3",
       description:  description(),
       package:      package(),
       deps:         deps(),
