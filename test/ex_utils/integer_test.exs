@@ -3,7 +3,7 @@ defmodule ExUtil.Tests.Integer do
   import ExUtils.Integer
 
   test "#to_filesize formats integers as simple file size" do
-    assert to_filesize(123)                 == "123 Bytes"
+    assert to_filesize(12)                  == "12 Bytes"
     assert to_filesize(1234)                == "1.21 KB"
     assert to_filesize(12345)               == "12.06 KB"
     assert to_filesize(1234567)             == "1.18 MB"

@@ -1,23 +1,33 @@
 defmodule ExUtils.Integer do
   @moduledoc """
-  Utility methods for the `Elixir.Integer` types
+  Utility methods for the `Integer` types
   """
 
-  @byte_size    1024
-  @filesizes    [KB: 1, MB: 2, GB: 3, TB: 4, PB: 5, EB: 6, ZB: 7, YB: 8]
+
   @default_opts [precision: 2]
-
-
+  @filesizes    [KB: 1, MB: 2, GB: 3, TB: 4, PB: 5, EB: 6, ZB: 7, YB: 8]
+  @byte_size    1024
 
   @doc """
-  Formats an `Integer` in a human-readable representation
-  of filesize (e.g giving it `1250` returns `"1.22 KB"`.
+  Formats an `Integer` in a human-readable representation of filesize
+
+  This method returns a string representing filesize in Bytes (e.g giving
+  it `1250` returns `"1.22 KB"`). It also accepts an optional value of
+  `:precision` that formats the integer to the give no. of decimal places
+  (default is `2`).
 
   ## Example
 
   ```
-  ExUtils.Integer.to_filesize(2048)
-  # => "2 KB"
+  ExUtils.Integer.to_filesize(12)                   # => "12 Bytes"
+  ExUtils.Integer.to_filesize(1234)                 # => "1.21 KB"
+  ExUtils.Integer.to_filesize(1234567)              # => "1.18 MB"
+  ExUtils.Integer.to_filesize(1234567890)           # => "1.15 GB"
+  ExUtils.Integer.to_filesize(1234567890123)        # => "1.12 TB"
+
+  ExUtils.Integer.to_filesize(12345, precision: 1)  # => "12.1 KB"
+  ExUtils.Integer.to_filesize(12345, precision: 2)  # => "12.06 KB"
+  ExUtils.Integer.to_filesize(12345, precision: 3)  # => "12.056 KB"
   ```
   """
   @spec to_filesize(number :: integer, opts :: Keyword.t) :: String.t
