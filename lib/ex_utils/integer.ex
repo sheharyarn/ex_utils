@@ -13,7 +13,7 @@ defmodule ExUtils.Integer do
 
   This method returns a string representing filesize in Bytes (e.g giving
   it `1250` returns `"1.22 KB"`). It also accepts an optional value of
-  `:precision` that formats the integer to the give no. of decimal places
+  `:precision` that formats the number to the given no. of decimal places
   (default is `2`).
 
   ## Example

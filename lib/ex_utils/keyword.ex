@@ -1,6 +1,6 @@
 defmodule ExUtils.Keyword do
   @moduledoc """
-  Utility methods for the `Elixir.Keyword` types
+  Utility methods for the `Keyword` types
   """
 
 
