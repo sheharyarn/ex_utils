@@ -1,9 +1,16 @@
 ExUtils
 =======
 
+[![Build Status][shield-travis]][travis-ci]
+[![Coverage Status][shield-inch]][inch-ci]
+[![Version][shield-version]][hexpm]
+[![License][shield-license]][hexpm]
+
 > :zap: Collection of Awesome Elixir shortcuts and utilities :zap:
 
-(Still a Work in Progress :stuck_out_tongue:)
+ExUtils provides helper methods and utilities for a lot of different data
+types in Elixir that haven't made to the Standard Library yet. [Head over
+to HexDocs][docs] for the full list of Modules, Functions and Macros.
 
 
 
@@ -11,30 +18,23 @@ ExUtils
 
 ```elixir
 def deps do
-  [{:ex_utils, "~> 0.1.5"}]
-end
-```
-
-Or if you want the latest stuff:
-
-```elixir
-def deps do
-  [{:ex_utils, git: "https://github.com/sheharyarn/ex_utils.git"}]
+  [{:ex_utils, "~> 0.1.6"}]
 end
 ```
 
 
 
-## Awesome Methods
+## Methods
 
 It's not possible to list all functions here, but you should check out the
 [Documentation][docs]! `ExUtils` has been divided into sub-modules, each
-with their own utility methods for different kinds of data:
+with their own utility methods:
 
  - [`ExUtils`][docs] - Core Module with generic methods that fit everything
- - [`ExUtils.Map`][docs-map] - Utility methods for Maps
- - [`ExUtils.Module`][docs-module] - Utility methods for Modules themselves
- - [`ExUtils.Keyword`][docs-keyword] - Utility methods for Elixir Keyword types
+ - [`ExUtils.Map`][docs-map]
+ - [`ExUtils.Module`][docs-module]
+ - [`ExUtils.Keyword`][docs-keyword]
+ - [`ExUtils.Keyword`][docs-integer]
 
 
 
@@ -61,12 +61,19 @@ This package is available as open source under the terms of the [MIT License][li
 
 
 
-  [license]:          http://opensource.org/licenses/MIT
+  [shield-version]:   https://img.shields.io/hexpm/v/ex_utils.svg
+  [shield-license]:   https://img.shields.io/hexpm/l/ex_utils.svg
+  [shield-downloads]: https://img.shields.io/hexpm/dt/ex_utils.svg
+  [shield-travis]:    https://img.shields.io/travis/sheharyarn/ex_utils/master.svg
+  [shield-inch]:      https://inch-ci.org/github/sheharyarn/ex_utils.svg?branch=master
+
+  [license]:          https://opensource.org/licenses/MIT
   [github-fork]:      https://github.com/sheharyarn/ex_utils/fork
 
   [hexpm]:            https://hex.pm/packages/ex_utils
   [docs]:             https://hexdocs.pm/ex_utils/ExUtils.html
   [docs-map]:         https://hexdocs.pm/ex_utils/ExUtils.Map.html
   [docs-module]:      https://hexdocs.pm/ex_utils/ExUtils.Module.html
-  [docs-keyword]:      https://hexdocs.pm/ex_utils/ExUtils.Keyword.html
+  [docs-keyword]:     https://hexdocs.pm/ex_utils/ExUtils.Keyword.html
+  [docs-integer]:     https://hexdocs.pm/ex_utils/ExUtils.Integer.html
 
