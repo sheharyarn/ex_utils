@@ -3,7 +3,7 @@ defmodule ExUtils.Mixfile do
 
   @app     :ex_utils
   @name    "ExUtils"
-  @version "0.1.5"
+  @version "0.1.6"
   @github  "https://github.com/sheharyarn/#{@app}"
 
   def project do
