@@ -34,7 +34,7 @@ with their own utility methods:
  - [`ExUtils.Map`][docs-map]
  - [`ExUtils.Module`][docs-module]
  - [`ExUtils.Keyword`][docs-keyword]
- - [`ExUtils.Keyword`][docs-integer]
+ - [`ExUtils.Integer`][docs-integer]
 
 
 
@@ -61,12 +61,6 @@ This package is available as open source under the terms of the [MIT License][li
 
 
 
-  [shield-version]:   https://img.shields.io/hexpm/v/ex_utils.svg
-  [shield-license]:   https://img.shields.io/hexpm/l/ex_utils.svg
-  [shield-downloads]: https://img.shields.io/hexpm/dt/ex_utils.svg
-  [shield-travis]:    https://img.shields.io/travis/sheharyarn/ex_utils/master.svg
-  [shield-inch]:      https://inch-ci.org/github/sheharyarn/ex_utils.svg?branch=master
-
   [license]:          https://opensource.org/licenses/MIT
   [github-fork]:      https://github.com/sheharyarn/ex_utils/fork
 
@@ -76,4 +70,12 @@ This package is available as open source under the terms of the [MIT License][li
   [docs-module]:      https://hexdocs.pm/ex_utils/ExUtils.Module.html
   [docs-keyword]:     https://hexdocs.pm/ex_utils/ExUtils.Keyword.html
   [docs-integer]:     https://hexdocs.pm/ex_utils/ExUtils.Integer.html
+
+  [travis-ci]:        https://travis-ci.org/sheharyarn/ex_utils
+  [inch-ci]:          https://inch-ci.org/github/sheharyarn/ex_utils
+
+  [shield-version]:   https://img.shields.io/hexpm/v/ex_utils.svg
+  [shield-license]:   https://img.shields.io/hexpm/l/ex_utils.svg
+  [shield-travis]:    https://img.shields.io/travis/sheharyarn/ex_utils/master.svg
+  [shield-inch]:      https://inch-ci.org/github/sheharyarn/ex_utils.svg?branch=master
 
