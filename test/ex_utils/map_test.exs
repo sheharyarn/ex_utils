@@ -5,8 +5,8 @@ defmodule ExUtils.Tests.Map do
     [map: %{"a" => 1, "b" => %{ "c" => 3, "d" => 4 } }]
   end
 
-  test "atomize_keys works with recursive option", context do
-    map = ExUtils.Map.atomize_keys(context[:map])
+  test "atomize_keys works with deep option", context do
+    map = ExUtils.Map.atomize_keys(context[:map], deep: true)
 
     assert map[:a]      == 1
     assert map["a"]     == nil
@@ -17,8 +17,8 @@ defmodule ExUtils.Tests.Map do
     assert map[:b]["d"] == nil
   end
 
-  test "atomize_keys works without recursive option", context do
-    map = ExUtils.Map.atomize_keys(context[:map], recursive: false)
+  test "atomize_keys works without deep option", context do
+    map = ExUtils.Map.atomize_keys(context[:map])
 
     assert map[:a]      == 1
     assert map["a"]     == nil

@@ -4,7 +4,7 @@ defmodule ExUtils.Map do
   """
 
 
-  @default_options [recursive: true]
+  @default_options [deep: false]
   @doc """
   Converts all (string) map keys to atoms
 
@@ -16,7 +16,7 @@ defmodule ExUtils.Map do
 
   ## Options
 
-  Only accepts one option: `recursive` with default value `true`
+  Only accepts one option: `deep` with default value `false`
 
   ## Examples
 
@@ -24,32 +24,24 @@ defmodule ExUtils.Map do
   map = %{"a" => 1, "b" => %{"c" => 3, "d" => 4} }
 
   ExUtils.Map.symbolize_keys(map)
-  #=> %{a: 1, b: %{c: 3, d: 4}}
-
-  ExUtils.Map.atomize_keys(map, recursive: false)
   #=> %{a: 1, b: %{"c" => 3, "d" => 4}}
+
+  ExUtils.Map.atomize_keys(map, deep: true)
+  #=> %{a: 1, b: %{c: 3, d: 4}}
   ```
   """
   @spec atomize_keys(map :: Map.t, opts :: Keyword.t) :: Map.t
   def atomize_keys(map, opts \\ [])
-  def atomize_keys(map, [recursive: false]) do
-    Enum.reduce map, %{}, fn {k, v}, m ->
-      map_put(m, k, v)
-    end
-  end
-
   def atomize_keys(map, opts) do
     opts = Keyword.merge(@default_options, opts)
 
     Enum.reduce map, %{}, fn {k, v}, m ->
-      v =
-        if is_map(v) do
-          atomize_keys(v, opts)
-        else
-          v
-        end
+      v = case is_map(v) && opts[:deep] do
+        true  -> atomize_keys(v, opts)
+        false -> v
+      end
 
-      map_put(m, k, v)
+      map_atom_put(m, k, v)
     end
   end
 
@@ -60,7 +52,7 @@ defmodule ExUtils.Map do
 
   ## Private Methods
 
-  defp map_put(m, k, v) do
+  defp map_atom_put(m, k, v) do
     cond do
       is_binary(k) -> Map.put(m, String.to_atom(k), v)
       true         -> Map.put(m, k, v)
