@@ -8,9 +8,9 @@ defmodule ExUtils.Map do
   @doc """
   Converts all (string) map keys to atoms
 
-  By default converts all string keys of the map and all sub-maps
-  to atoms. Conversion to atoms can be limited to the base map
-  by specifiying `recursive: false` in options
+  By default converts all string keys of the map to atoms at the
+  first level. You can recursively convert keys in the base map and
+  all sub-maps by specifiying `deep: true` in options
 
   You can also call `:symbolize_keys/2` instead of `:atomize_keys/2`
 
