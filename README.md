@@ -1,7 +1,6 @@
 ExUtils
 =======
 
-[![Build Status][shield-travis]][travis-ci]
 [![Coverage Status][shield-inch]][inch-ci]
 [![Version][shield-version]][hexpm]
 [![License][shield-license]][hexpm]
@@ -71,11 +70,9 @@ This package is available as open source under the terms of the [MIT License][li
   [docs-keyword]:     https://hexdocs.pm/ex_utils/ExUtils.Keyword.html
   [docs-integer]:     https://hexdocs.pm/ex_utils/ExUtils.Integer.html
 
-  [travis-ci]:        https://travis-ci.org/sheharyarn/ex_utils
   [inch-ci]:          https://inch-ci.org/github/sheharyarn/ex_utils
 
   [shield-version]:   https://img.shields.io/hexpm/v/ex_utils.svg
   [shield-license]:   https://img.shields.io/hexpm/l/ex_utils.svg
-  [shield-travis]:    https://img.shields.io/travis/sheharyarn/ex_utils/master.svg
   [shield-inch]:      https://inch-ci.org/github/sheharyarn/ex_utils.svg?branch=master
 
