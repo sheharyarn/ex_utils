@@ -5,11 +5,11 @@ ExUtils
 [![Version][shield-version]][hexpm]
 [![License][shield-license]][hexpm]
 
-> :zap: Collection of Awesome Elixir shortcuts and utilities :zap:
+> :zap: Elixir utilities, helpers and shortcuts :zap:
 
 ExUtils provides helper methods and utilities for a lot of different data
-types in Elixir that haven't made to the Standard Library yet. [Head over
-to HexDocs][docs] for the full list of Modules, Functions and Macros.
+types in Elixir that are not present in the Kernel yet. [Head over
+to HexDocs][docs] for the full list of modules, functions and macros.
 
 
 
@@ -26,22 +26,14 @@ end
 ## Methods
 
 It's not possible to list all functions here, but you should check out the
-[Documentation][docs]! `ExUtils` has been divided into sub-modules, each
+[Documentation][docs]. `ExUtils` has been divided into sub-modules, each
 with their own utility methods:
 
- - [`ExUtils`][docs] - Core Module with generic methods that fit everything
+ - [`ExUtils.Term`][docs] - Core Module with generic methods that fit everything
  - [`ExUtils.Map`][docs-map]
  - [`ExUtils.Module`][docs-module]
  - [`ExUtils.Keyword`][docs-keyword]
  - [`ExUtils.Integer`][docs-integer]
-
-
-
-## Roadmap
-
- - [x] Write missing Tests and Documentation
- - [ ] Provide better integration with core Elixir Modules
- - [ ] Keep adding more awesome shortcuts and utilities
 
 
 
