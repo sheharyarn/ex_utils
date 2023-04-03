@@ -3,7 +3,6 @@ defmodule ExUtils.Map do
   Elixir Utility methods for the `Map` module
   """
 
-
   @default_options [deep: false]
   @doc """
   Converts all (string) map keys to atoms
@@ -30,33 +29,31 @@ defmodule ExUtils.Map do
   #=> %{a: 1, b: %{c: 3, d: 4}}
   ```
   """
-  @spec atomize_keys(map :: Map.t, opts :: Keyword.t) :: Map.t
+  @spec atomize_keys(map :: Map.t(), opts :: Keyword.t()) :: Map.t()
   def atomize_keys(map, opts \\ [])
+
   def atomize_keys(map, opts) do
     opts = Keyword.merge(@default_options, opts)
 
-    Enum.reduce map, %{}, fn {k, v}, m ->
-      v = case is_map(v) && opts[:deep] do
-        true  -> atomize_keys(v, opts)
-        false -> v
-      end
+    Enum.reduce(map, %{}, fn {k, v}, m ->
+      v =
+        case is_map(v) && opts[:deep] do
+          true -> atomize_keys(v, opts)
+          false -> v
+        end
 
       map_atom_put(m, k, v)
-    end
+    end)
   end
 
-
   defdelegate symbolize_keys(map, opts \\ []), to: __MODULE__, as: :atomize_keys
-
-
 
   ## Private Methods
 
   defp map_atom_put(m, k, v) do
     cond do
       is_binary(k) -> Map.put(m, String.to_atom(k), v)
-      true         -> Map.put(m, k, v)
+      true -> Map.put(m, k, v)
     end
   end
-
 end

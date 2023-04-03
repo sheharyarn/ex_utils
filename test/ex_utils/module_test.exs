@@ -1,7 +1,8 @@
 defmodule ExUtils.Tests.Module do
   use ExUnit.Case
 
-  defmodule Animal do; end
+  defmodule Animal do
+  end
 
   setup do
     [struct: %Person{name: "Ali", age: 23}]
@@ -19,17 +20,17 @@ defmodule ExUtils.Tests.Module do
   end
 
   test "#has_method? returns true if method exists for module" do
-    assert ExUtils.Module.has_method?(Person, :old?)      == true
+    assert ExUtils.Module.has_method?(Person, :old?) == true
     assert ExUtils.Module.has_method?(Person, {:old?, 1}) == true
     assert ExUtils.Module.has_method?(Person, {:old?, 2}) == true
 
-    assert ExUtils.Module.has_method?(Person, :unknown)   == false
+    assert ExUtils.Module.has_method?(Person, :unknown) == false
     assert ExUtils.Module.has_method?(Person, {:old?, 0}) == false
     assert ExUtils.Module.has_method?(Person, {:old?, 3}) == false
   end
 
   test "#name returns Module name without Elixir namespace" do
-    assert ExUtils.Module.name(SomeModule)     == "SomeModule"
+    assert ExUtils.Module.name(SomeModule) == "SomeModule"
     assert ExUtils.Module.name(Another.Module) == "Another.Module"
   end
 end

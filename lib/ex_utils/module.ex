@@ -3,8 +3,6 @@ defmodule ExUtils.Module do
   Generic Elixir utility methods for modules themselves
   """
 
-
-
   @doc """
   Returns a String of the Module's name (without the Elixir namespace)
 
@@ -15,12 +13,10 @@ defmodule ExUtils.Module do
   ExUtils.Module.name(Another.Module)   # => "Another.Module"
   ```
   """
-  @spec name(module :: module) :: String.t
+  @spec name(module :: module) :: String.t()
   def name(module) do
-    module |> Module.split |> Enum.join(".")
+    module |> Module.split() |> Enum.join(".")
   end
-
-
 
   @doc """
   Returns a Keyword List of all methods of a module
@@ -41,12 +37,10 @@ defmodule ExUtils.Module do
   # => [delete: 2, delete_at: 2, duplicate: 2, flatten: 1, flatten: 2, ...]
   ```
   """
-  @spec methods(module :: module) :: Keyword.t
+  @spec methods(module :: module) :: Keyword.t()
   def methods(module) do
     module.__info__(:functions)
   end
-
-
 
   @doc """
   Checks if a Module exports a specific method
@@ -73,7 +67,6 @@ defmodule ExUtils.Module do
   def has_method?(module, {method, arity}) when is_atom(method) do
     :erlang.function_exported(module, method, arity)
   end
-
 
   ## Delegated Methods
 

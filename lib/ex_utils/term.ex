@@ -3,7 +3,6 @@ defmodule ExUtils.Term do
   Generic utilities for all Elixir terms
   """
 
-
   @doc """
   Checks if the term is a struct as well as a map
 
@@ -18,8 +17,7 @@ defmodule ExUtils.Term do
   @spec is_struct?(term :: term) :: boolean
   def is_struct?(term)
   def is_struct?(%{__struct__: _}), do: true
-  def is_struct?(_),                do: false
-
+  def is_struct?(_), do: false
 
   @doc """
   Checks if the term is a pure map (i.e. not a struct)

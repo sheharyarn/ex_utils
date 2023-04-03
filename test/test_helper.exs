@@ -9,4 +9,3 @@ defmodule Person do
     person.age > threshold
   end
 end
-

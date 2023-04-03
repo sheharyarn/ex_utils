@@ -1,29 +1,29 @@
 defmodule ExUtils.Mixfile do
   use Mix.Project
 
-  @app     :ex_utils
-  @name    "ExUtils"
+  @app :ex_utils
+  @name "ExUtils"
   @version "0.1.7"
-  @github  "https://github.com/sheharyarn/#{@app}"
+  @github "https://github.com/sheharyarn/#{@app}"
 
   def project do
     [
       # Project
-      app:          @app,
-      version:      @version,
-      elixir:       "~> 1.3",
-      description:  description(),
-      package:      package(),
-      deps:         deps(),
+      app: @app,
+      version: @version,
+      elixir: "~> 1.3",
+      description: description(),
+      package: package(),
+      deps: deps(),
 
       # ExDoc
-      name:         @name,
-      source_url:   @github,
+      name: @name,
+      source_url: @github,
       homepage_url: @github,
       docs: [
-        main:       @name,
-        canonical:  "https://hexdocs.pm/#{@app}",
-        extras:     ["README.md"]
+        main: @name,
+        canonical: "https://hexdocs.pm/#{@app}",
+        extras: ["README.md"]
       ]
     ]
   end
@@ -34,7 +34,7 @@ defmodule ExUtils.Mixfile do
 
   defp deps do
     [
-      {:ex_doc,  ">= 0.0.0", only: :dev },
+      {:ex_doc, ">= 0.0.0", only: :dev},
       {:inch_ex, ">= 0.0.0", only: :docs}
     ]
   end

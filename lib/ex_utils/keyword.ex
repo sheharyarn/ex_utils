@@ -3,8 +3,6 @@ defmodule ExUtils.Keyword do
   Utility methods for the `Keyword` types
   """
 
-
-
   @doc """
   Converts a keyword into map
 
@@ -15,9 +13,8 @@ defmodule ExUtils.Keyword do
   # => %{a: 1, b: 2, c: 3}
   ```
   """
-  @spec to_map(keyword :: Keyword.t) :: Map.t
+  @spec to_map(keyword :: Keyword.t()) :: Map.t()
   def to_map(keyword) do
     Enum.into(keyword, %{})
   end
-
 end

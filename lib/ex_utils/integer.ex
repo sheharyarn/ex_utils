@@ -3,10 +3,9 @@ defmodule ExUtils.Integer do
   Utility methods for the `Integer` types
   """
 
-
   @default_opts [precision: 2]
-  @filesizes    [KB: 1, MB: 2, GB: 3, TB: 4, PB: 5, EB: 6, ZB: 7, YB: 8]
-  @byte_size    1024
+  @filesizes [KB: 1, MB: 2, GB: 3, TB: 4, PB: 5, EB: 6, ZB: 7, YB: 8]
+  @byte_size 1024
 
   @doc """
   Formats an `Integer` in a human-readable representation of filesize
@@ -30,11 +29,10 @@ defmodule ExUtils.Integer do
   ExUtils.Integer.to_filesize(12345, precision: 3)  # => "12.056 KB"
   ```
   """
-  @spec to_filesize(number :: integer, opts :: Keyword.t) :: String.t
+  @spec to_filesize(number :: integer, opts :: Keyword.t()) :: String.t()
   def to_filesize(number, opts \\ []) when is_integer(number) do
     if number < @byte_size do
       "#{number} Bytes"
-
     else
       opts = Keyword.merge(@default_opts, opts)
 
@@ -45,6 +43,4 @@ defmodule ExUtils.Integer do
       end)
     end
   end
-
 end
-
