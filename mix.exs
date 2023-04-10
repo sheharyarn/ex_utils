@@ -1,4 +1,4 @@
-defmodule ExUtils.Mixfile do
+defmodule ExUtils.MixProject do
   use Mix.Project
 
   @app :ex_utils
@@ -41,7 +41,7 @@ defmodule ExUtils.Mixfile do
 
   defp description do
     """
-    Collection of Awesome Elixir shortcuts and utilities ⚡
+    Elixir utilities, helpers and shortcuts ⚡
     """
   end
 
@@ -49,9 +49,9 @@ defmodule ExUtils.Mixfile do
     [
       name: @app,
       maintainers: ["Sheharyar Naseer"],
-      licenses: ["MIT"],
+      licenses: ~w[MIT],
       files: ~w(mix.exs lib README.md),
-      links: %{"Github" => @github}
+      links: %{"GitHub" => @github}
     ]
   end
 end
