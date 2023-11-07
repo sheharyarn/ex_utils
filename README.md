@@ -29,11 +29,11 @@ It's not possible to list all functions here, but you should check out the
 [Documentation][docs]. `ExUtils` has been divided into sub-modules, each
 with their own utility methods:
 
- - [`ExUtils.Term`][docs] - Core Module with generic methods that fit everything
- - [`ExUtils.Map`][docs-map]
- - [`ExUtils.Module`][docs-module]
- - [`ExUtils.Keyword`][docs-keyword]
- - [`ExUtils.Integer`][docs-integer]
+ - [`ExUtils.Terms`][docs-terms] - Core Module with generic methods that fit everything
+ - [`ExUtils.Maps`][docs-maps]
+ - [`ExUtils.Modules`][docs-modules]
+ - [`ExUtils.Keywords`][docs-keywords]
+ - [`ExUtils.Integers`][docs-integers]
 
 
 
@@ -57,14 +57,14 @@ This package is available as open source under the terms of the [MIT License][li
 
   [hexpm]:            https://hex.pm/packages/ex_utils
   [docs]:             https://hexdocs.pm/ex_utils/ExUtils.html
-  [docs-map]:         https://hexdocs.pm/ex_utils/ExUtils.Map.html
-  [docs-module]:      https://hexdocs.pm/ex_utils/ExUtils.Module.html
-  [docs-keyword]:     https://hexdocs.pm/ex_utils/ExUtils.Keyword.html
-  [docs-integer]:     https://hexdocs.pm/ex_utils/ExUtils.Integer.html
+  [docs-terms]:       https://hexdocs.pm/ex_utils/ExUtils.Terms.html
+  [docs-maps]:        https://hexdocs.pm/ex_utils/ExUtils.Maps.html
+  [docs-modules]:     https://hexdocs.pm/ex_utils/ExUtils.Modules.html
+  [docs-keywords]:    https://hexdocs.pm/ex_utils/ExUtils.Keywords.html
+  [docs-integers]:    https://hexdocs.pm/ex_utils/ExUtils.Integers.html
 
   [inch-ci]:          https://inch-ci.org/github/sheharyarn/ex_utils
 
   [shield-version]:   https://img.shields.io/hexpm/v/ex_utils.svg
   [shield-license]:   https://img.shields.io/hexpm/l/ex_utils.svg
   [shield-inch]:      https://inch-ci.org/github/sheharyarn/ex_utils.svg?branch=master
-
