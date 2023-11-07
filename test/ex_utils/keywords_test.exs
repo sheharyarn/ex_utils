@@ -1,4 +1,4 @@
-defmodule ExUtils.Tests.Keyword do
+defmodule ExUtils.Tests.Keywords do
   use ExUnit.Case
 
   setup do
@@ -6,9 +6,9 @@ defmodule ExUtils.Tests.Keyword do
   end
 
   test "to_map converts a keyword list into a map", context do
-    map = ExUtils.Keyword.to_map(context.kw)
+    map = ExUtils.Keywords.to_map(context.kw)
 
-    assert Map.keys(map) == [:a, :b, :c, :d, :e]
+    assert map |> Map.keys() |> Enum.sort() == [:a, :b, :c, :d, :e]
 
     assert map[:a] == 1
     assert map[:b] == "abc"

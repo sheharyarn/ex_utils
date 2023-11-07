@@ -1,4 +1,4 @@
-defmodule ExUtils.Tests.Map do
+defmodule ExUtils.Tests.Maps do
   use ExUnit.Case
 
   setup do
@@ -6,7 +6,7 @@ defmodule ExUtils.Tests.Map do
   end
 
   test "atomize_keys works with deep option", context do
-    map = ExUtils.Map.atomize_keys(context[:map], deep: true)
+    map = ExUtils.Maps.atomize_keys(context[:map], deep: true)
 
     assert map[:a] == 1
     assert map["a"] == nil
@@ -18,7 +18,7 @@ defmodule ExUtils.Tests.Map do
   end
 
   test "atomize_keys works without deep option", context do
-    map = ExUtils.Map.atomize_keys(context[:map])
+    map = ExUtils.Maps.atomize_keys(context[:map])
 
     assert map[:a] == 1
     assert map["a"] == nil
@@ -30,7 +30,7 @@ defmodule ExUtils.Tests.Map do
   end
 
   test "atomize_keys only symbolizes strings" do
-    map = ExUtils.Map.atomize_keys(%{"a" => 0, 3 => 6, :atom => "13", {:a, :b} => 5})
+    map = ExUtils.Maps.atomize_keys(%{"a" => 0, 3 => 6, :atom => "13", {:a, :b} => 5})
 
     assert map[:a] == 0
     assert map[3] == 6

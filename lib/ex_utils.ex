@@ -5,7 +5,7 @@ defmodule ExUtils do
 
   # Delegated Methods
 
-  defdelegate methods(module), to: ExUtils.Module
-  defdelegate functions(module), to: ExUtils.Module
-  defdelegate has_method?(module, method), to: ExUtils.Module
+  defdelegate methods(module), to: ExUtils.Modules
+  defdelegate functions(module), to: ExUtils.Modules
+  defdelegate has_method?(module, method), to: ExUtils.Modules
 end

@@ -1,4 +1,4 @@
-defmodule ExUtils.Integer do
+defmodule ExUtils.Integers do
   @moduledoc """
   Utility methods for the `Integer` types
   """
@@ -18,15 +18,15 @@ defmodule ExUtils.Integer do
   ## Example
 
   ```
-  ExUtils.Integer.to_filesize(12)                   # => "12 Bytes"
-  ExUtils.Integer.to_filesize(1234)                 # => "1.21 KB"
-  ExUtils.Integer.to_filesize(1234567)              # => "1.18 MB"
-  ExUtils.Integer.to_filesize(1234567890)           # => "1.15 GB"
-  ExUtils.Integer.to_filesize(1234567890123)        # => "1.12 TB"
+  ExUtils.Integers.to_filesize(12)                   # => "12 Bytes"
+  ExUtils.Integers.to_filesize(1234)                 # => "1.21 KB"
+  ExUtils.Integers.to_filesize(1234567)              # => "1.18 MB"
+  ExUtils.Integers.to_filesize(1234567890)           # => "1.15 GB"
+  ExUtils.Integers.to_filesize(1234567890123)        # => "1.12 TB"
 
-  ExUtils.Integer.to_filesize(12345, precision: 1)  # => "12.1 KB"
-  ExUtils.Integer.to_filesize(12345, precision: 2)  # => "12.06 KB"
-  ExUtils.Integer.to_filesize(12345, precision: 3)  # => "12.056 KB"
+  ExUtils.Integers.to_filesize(12345, precision: 1)  # => "12.1 KB"
+  ExUtils.Integers.to_filesize(12345, precision: 2)  # => "12.06 KB"
+  ExUtils.Integers.to_filesize(12345, precision: 3)  # => "12.056 KB"
   ```
   """
   @spec to_filesize(number :: integer, opts :: Keyword.t()) :: String.t()

@@ -1,6 +1,6 @@
-defmodule ExUtil.Tests.Integer do
+defmodule ExUtils.Tests.Integers do
   use ExUnit.Case
-  import ExUtils.Integer
+  import ExUtils.Integers
 
   test "#to_filesize formats integers as simple file size" do
     assert to_filesize(12) == "12 Bytes"

@@ -1,4 +1,4 @@
-defmodule ExUtils.Module do
+defmodule ExUtils.Modules do
   @moduledoc """
   Generic Elixir utility methods for modules themselves
   """
@@ -9,8 +9,8 @@ defmodule ExUtils.Module do
   ## Example
 
   ```
-  ExUtils.Module.name(SomeModule)       # => "SomeModule"
-  ExUtils.Module.name(Another.Module)   # => "Another.Module"
+  ExUtils.Modules.name(SomeModule)       # => "SomeModule"
+  ExUtils.Modules.name(Another.Module)   # => "Another.Module"
   ```
   """
   @spec name(module :: module) :: String.t()
@@ -28,7 +28,7 @@ defmodule ExUtils.Module do
 
    - `ExUtils.methods/1`
    - `ExUtils.functions/1`
-   - `ExUtils.Module.functions/1`
+   - `ExUtils.Modules.functions/1`
 
   ## Example
 

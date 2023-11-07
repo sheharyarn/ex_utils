@@ -1,4 +1,4 @@
-defmodule ExUtils.Term do
+defmodule ExUtils.Terms do
   @moduledoc """
   Generic utilities for all Elixir terms
   """
@@ -9,9 +9,9 @@ defmodule ExUtils.Term do
   ## Example
 
   ```
-  ExUnit.is_struct?(:atom)                  # => false
-  ExUnit.is_struct?(%{a: 1})                # => false
-  ExUnit.is_struct?(%Person{name: "Ali"})   # => true
+  ExUtils.Terms.is_struct?(:atom)                  # => false
+  ExUtils.Terms.is_struct?(%{a: 1})                # => false
+  ExUtils.Terms.is_struct?(%Person{name: "Ali"})   # => true
   ```
   """
   @spec is_struct?(term :: term) :: boolean
@@ -25,8 +25,8 @@ defmodule ExUtils.Term do
   ## Example
 
   ```
-  ExUtils.is_pure_map?(%{a: 1, b: 2})          # => true
-  ExUtils.is_pure_map?(%Person{name: "Ali"})   # => false
+  ExUtils.Terms.is_pure_map?(%{a: 1, b: 2})          # => true
+  ExUtils.Terms.is_pure_map?(%Person{name: "Ali"})   # => false
   ```
   """
   @spec is_pure_map?(term :: term) :: boolean

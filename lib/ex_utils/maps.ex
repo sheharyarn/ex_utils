@@ -1,4 +1,4 @@
-defmodule ExUtils.Map do
+defmodule ExUtils.Maps do
   @moduledoc """
   Elixir Utility methods for the `Map` module
   """
@@ -22,10 +22,10 @@ defmodule ExUtils.Map do
   ```
   map = %{"a" => 1, "b" => %{"c" => 3, "d" => 4} }
 
-  ExUtils.Map.symbolize_keys(map)
+  ExUtils.Maps.symbolize_keys(map)
   #=> %{a: 1, b: %{"c" => 3, "d" => 4}}
 
-  ExUtils.Map.atomize_keys(map, deep: true)
+  ExUtils.Maps.atomize_keys(map, deep: true)
   #=> %{a: 1, b: %{c: 3, d: 4}}
   ```
   """

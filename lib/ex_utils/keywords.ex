@@ -1,4 +1,4 @@
-defmodule ExUtils.Keyword do
+defmodule ExUtils.Keywords do
   @moduledoc """
   Utility methods for the `Keyword` types
   """
@@ -9,7 +9,7 @@ defmodule ExUtils.Keyword do
   ## Example
 
   ```
-  ExUtils.Keyword.to_map([a: 1, b: 2, c: 3])
+  ExUtils.Keywords.to_map([a: 1, b: 2, c: 3])
   # => %{a: 1, b: 2, c: 3}
   ```
   """
