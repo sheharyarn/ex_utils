@@ -34,6 +34,7 @@ with their own utility methods:
  - [`ExUtils.Modules`][docs-modules]
  - [`ExUtils.Keywords`][docs-keywords]
  - [`ExUtils.Integers`][docs-integers]
+ - [`ExUtils.Random`][docs-random]
 
 
 
@@ -62,6 +63,7 @@ This package is available as open source under the terms of the [MIT License][li
   [docs-modules]:     https://hexdocs.pm/ex_utils/ExUtils.Modules.html
   [docs-keywords]:    https://hexdocs.pm/ex_utils/ExUtils.Keywords.html
   [docs-integers]:    https://hexdocs.pm/ex_utils/ExUtils.Integers.html
+  [docs-random]:      https://hexdocs.pm/ex_utils/ExUtils.Random.html
 
   [inch-ci]:          https://inch-ci.org/github/sheharyarn/ex_utils
 
