@@ -29,7 +29,7 @@ defmodule ExUtils.MixProject do
   end
 
   def application do
-    [applications: []]
+    [extra_applications: [:crypto]]
   end
 
   defp deps do
