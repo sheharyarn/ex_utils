@@ -2,6 +2,8 @@ defmodule ExUtils.Tests.Terms do
   use ExUnit.Case
   import ExUtils.Terms
 
+  doctest ExUtils.Terms
+
   setup do
     [map: %{a: 1, b: 2, c: 3}, struct: %Person{name: "Ali", age: 23}]
   end

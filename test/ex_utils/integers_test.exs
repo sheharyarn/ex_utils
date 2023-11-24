@@ -2,6 +2,8 @@ defmodule ExUtils.Tests.Integers do
   use ExUnit.Case
   import ExUtils.Integers
 
+  doctest ExUtils.Integers
+
   describe "to_filesize/1" do
     test "formats integers as simple file sizes" do
       assert to_filesize(12) == "12 Bytes"

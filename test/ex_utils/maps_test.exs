@@ -1,5 +1,8 @@
 defmodule ExUtils.Tests.Maps do
   use ExUnit.Case
+  import ExUtils.Maps
+
+  doctest ExUtils.Maps
 
   setup do
     [map: %{"a" => 1, "b" => %{"c" => 3, "d" => 4}}]
@@ -7,7 +10,7 @@ defmodule ExUtils.Tests.Maps do
 
   describe "atomize_keys/1" do
     test "converts keys at the first level", context do
-      map = ExUtils.Maps.atomize_keys(context[:map])
+      map = atomize_keys(context[:map])
 
       assert map[:a] == 1
       assert map["a"] == nil
@@ -19,7 +22,7 @@ defmodule ExUtils.Tests.Maps do
     end
 
     test "only converts string keys" do
-      map = ExUtils.Maps.atomize_keys(%{"a" => 0, 3 => 6, :atom => "13", {:a, :b} => 5})
+      map = atomize_keys(%{"a" => 0, 3 => 6, :atom => "13", {:a, :b} => 5})
 
       assert map[:a] == 0
       assert map[3] == 6
@@ -30,7 +33,7 @@ defmodule ExUtils.Tests.Maps do
 
   describe "atomize_keys/2" do
     test "recursively converts keys when deep is true", context do
-      map = ExUtils.Maps.atomize_keys(context[:map], deep: true)
+      map = atomize_keys(context[:map], deep: true)
 
       assert map[:a] == 1
       assert map["a"] == nil
