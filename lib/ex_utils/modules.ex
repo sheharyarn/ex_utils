@@ -8,9 +8,11 @@ defmodule ExUtils.Modules do
 
   ## Example
 
-  ```
-  ExUtils.Modules.name(SomeModule)       # => "SomeModule"
-  ExUtils.Modules.name(Another.Module)   # => "Another.Module"
+  ```elixir
+  iex> ExUtils.Modules.name(SomeModule)
+  "SomeModule"
+  iex> ExUtils.Modules.name(Another.Module)
+  "Another.Module"
   ```
   """
   @spec name(module :: module) :: String.t()
@@ -32,9 +34,11 @@ defmodule ExUtils.Modules do
 
   ## Example
 
-  ```
-  ExUtils.functions(List)
-  # => [delete: 2, delete_at: 2, duplicate: 2, flatten: 1, flatten: 2, ...]
+  ```elixir
+  iex> {:flatten, 1} in ExUtils.functions(List)
+  true
+  iex> {:flatten, 2} in ExUtils.Modules.methods(List)
+  true
   ```
   """
   @spec methods(module :: module) :: Keyword.t()
@@ -53,10 +57,13 @@ defmodule ExUtils.Modules do
 
   ## Example
 
-  ```
-  ExUtils.has_method?(Map, :keys)         # => true
-  ExUtils.has_method?(Map, {:keys, 1})    # => true
-  ExUtils.has_method?(Map, {:keys, 2})    # => false
+  ```elixir
+  iex> ExUtils.has_method?(Map, :keys)
+  true
+  iex> ExUtils.has_method?(Map, {:keys, 1})
+  true
+  iex> ExUtils.has_method?(Map, {:keys, 2})
+  false
   ```
   """
   @spec has_method?(module :: module, method :: atom | {atom, number}) :: boolean

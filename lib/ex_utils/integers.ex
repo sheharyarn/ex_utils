@@ -17,16 +17,24 @@ defmodule ExUtils.Integers do
 
   ## Example
 
-  ```
-  ExUtils.Integers.to_filesize(12)                   # => "12 Bytes"
-  ExUtils.Integers.to_filesize(1234)                 # => "1.21 KB"
-  ExUtils.Integers.to_filesize(1234567)              # => "1.18 MB"
-  ExUtils.Integers.to_filesize(1234567890)           # => "1.15 GB"
-  ExUtils.Integers.to_filesize(1234567890123)        # => "1.12 TB"
+  ```elixir
+  iex> ExUtils.Integers.to_filesize(12)
+  "12 Bytes"
+  iex> ExUtils.Integers.to_filesize(1234)
+  "1.21 KB"
+  iex> ExUtils.Integers.to_filesize(1_234_567)
+  "1.18 MB"
+  iex> ExUtils.Integers.to_filesize(1_234_567_890)
+  "1.15 GB"
+  iex> ExUtils.Integers.to_filesize(1_234_567_890_123)
+  "1.12 TB"
 
-  ExUtils.Integers.to_filesize(12345, precision: 1)  # => "12.1 KB"
-  ExUtils.Integers.to_filesize(12345, precision: 2)  # => "12.06 KB"
-  ExUtils.Integers.to_filesize(12345, precision: 3)  # => "12.056 KB"
+  iex> ExUtils.Integers.to_filesize(12_345, precision: 1)
+  "12.1 KB"
+  iex> ExUtils.Integers.to_filesize(12_345, precision: 2)
+  "12.06 KB"
+  iex> ExUtils.Integers.to_filesize(12_345, precision: 3)
+  "12.056 KB"
   ```
   """
   @spec to_filesize(number :: integer, opts :: Keyword.t()) :: String.t()

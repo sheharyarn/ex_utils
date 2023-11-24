@@ -19,14 +19,12 @@ defmodule ExUtils.Maps do
 
   ## Examples
 
-  ```
-  map = %{"a" => 1, "b" => %{"c" => 3, "d" => 4} }
-
-  ExUtils.Maps.symbolize_keys(map)
-  #=> %{a: 1, b: %{"c" => 3, "d" => 4}}
-
-  ExUtils.Maps.atomize_keys(map, deep: true)
-  #=> %{a: 1, b: %{c: 3, d: 4}}
+  ```elixir
+  iex> map = %{"a" => 1, "b" => %{"c" => 3, "d" => 4}}
+  iex> ExUtils.Maps.symbolize_keys(map)
+  %{a: 1, b: %{"c" => 3, "d" => 4}}
+  iex> ExUtils.Maps.atomize_keys(map, deep: true)
+  %{a: 1, b: %{c: 3, d: 4}}
   ```
   """
   @spec atomize_keys(map :: Map.t(), opts :: Keyword.t()) :: Map.t()
@@ -45,8 +43,6 @@ defmodule ExUtils.Maps do
       map_atom_put(m, k, v)
     end)
   end
-
-  defdelegate symbolize_keys(map, opts \\ []), to: __MODULE__, as: :atomize_keys
 
   ## Private Methods
 

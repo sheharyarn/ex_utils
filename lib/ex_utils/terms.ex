@@ -8,10 +8,13 @@ defmodule ExUtils.Terms do
 
   ## Example
 
-  ```
-  ExUtils.Terms.is_struct?(:atom)                  # => false
-  ExUtils.Terms.is_struct?(%{a: 1})                # => false
-  ExUtils.Terms.is_struct?(%Person{name: "Ali"})   # => true
+  ```elixir
+  iex> ExUtils.Terms.is_struct?(:atom)
+  false
+  iex> ExUtils.Terms.is_struct?(%{a: 1})
+  false
+  iex> ExUtils.Terms.is_struct?(%URI{})
+  true
   ```
   """
   @spec is_struct?(term :: term) :: boolean
@@ -24,9 +27,11 @@ defmodule ExUtils.Terms do
 
   ## Example
 
-  ```
-  ExUtils.Terms.is_pure_map?(%{a: 1, b: 2})          # => true
-  ExUtils.Terms.is_pure_map?(%Person{name: "Ali"})   # => false
+  ```elixir
+  iex> ExUtils.Terms.is_pure_map?(%{a: 1, b: 2})
+  true
+  iex> ExUtils.Terms.is_pure_map?(%URI{})
+  false
   ```
   """
   @spec is_pure_map?(term :: term) :: boolean

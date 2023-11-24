@@ -8,8 +8,9 @@ defmodule ExUtils.Random do
 
   ## Example
 
-  ```
-  ExUtils.Random.boolean() # => true or false
+  ```elixir
+  iex> ExUtils.Random.boolean()
+  true
   ```
   """
   @spec boolean() :: boolean()
@@ -24,8 +25,9 @@ defmodule ExUtils.Random do
 
   ## Example
 
-  ```
-  ExUtils.Random.integer(10) # => an integer from 1 through 10
+  ```elixir
+  iex> ExUtils.Random.integer(10)
+  7
   ```
   """
   @spec integer(pos_integer()) :: pos_integer()
@@ -40,8 +42,9 @@ defmodule ExUtils.Random do
 
   ## Example
 
-  ```
-  ExUtils.Random.integer(5, 10) # => an integer greater than 5 and up to 10
+  ```elixir
+  iex> ExUtils.Random.integer(5, 10)
+  8
   ```
   """
   @spec integer(integer(), integer()) :: integer()
@@ -56,9 +59,11 @@ defmodule ExUtils.Random do
 
   ## Examples
 
-  ```
-  ExUtils.Random.string()  # => "q4mRy_YGXa"
-  ExUtils.Random.string(5) # => "Bk9p_"
+  ```elixir
+  iex> ExUtils.Random.string()
+  "q4mRy_YGXa"
+  iex> ExUtils.Random.string(5)
+  "Bk9p_"
   ```
   """
   @spec string(pos_integer()) :: binary()
