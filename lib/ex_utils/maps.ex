@@ -44,6 +44,9 @@ defmodule ExUtils.Maps do
     end)
   end
 
+  @deprecated "Use ExUtils.Maps.atomize_keys/2 instead"
+  defdelegate symbolize_keys(map, opts \\ []), to: __MODULE__, as: :atomize_keys
+
   ## Private Methods
 
   defp map_atom_put(m, k, v) do
