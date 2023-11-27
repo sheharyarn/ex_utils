@@ -65,7 +65,7 @@ defmodule ExUtils.Tests.Maps do
     end
   end
 
-  describe "atomize_keys/1" do
+  describe "atomize_keys/2" do
     test "converts keys at the first level", context do
       map = atomize_keys(context[:map])
 
@@ -86,9 +86,7 @@ defmodule ExUtils.Tests.Maps do
       assert map[:atom] == "13"
       assert map[{:a, :b}] == 5
     end
-  end
 
-  describe "atomize_keys/2" do
     test "recursively converts keys when deep is true", context do
       map = atomize_keys(context[:map], deep: true)
 

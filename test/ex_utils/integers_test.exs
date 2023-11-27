@@ -4,7 +4,7 @@ defmodule ExUtils.Tests.Integers do
 
   doctest ExUtils.Integers
 
-  describe "to_filesize/1" do
+  describe "to_filesize/2" do
     test "formats integers as simple file sizes" do
       assert to_filesize(12) == "12 Bytes"
       assert to_filesize(1234) == "1.21 KB"
@@ -15,9 +15,7 @@ defmodule ExUtils.Tests.Integers do
       assert to_filesize(1_234_567_890_123_456) == "1.1 PB"
       assert to_filesize(1_234_567_890_123_456_789) == "1.07 EB"
     end
-  end
 
-  describe "to_filesize/2" do
     test "uses the specified precision" do
       assert to_filesize(1_234_567_890, precision: 0) == "1.0 GB"
       assert to_filesize(1_234_567_890, precision: 1) == "1.1 GB"

@@ -8,7 +8,7 @@ defmodule ExUtils.Tests.Random do
     end
   end
 
-  describe "integer/1" do
+  describe "integer/2" do
     test "returns a positive integer up to the given maximum" do
       Enum.each(1..100, fn _ ->
         value = integer(10)
@@ -17,9 +17,7 @@ defmodule ExUtils.Tests.Random do
         assert value in 1..10
       end)
     end
-  end
 
-  describe "integer/2" do
     test "returns an integer within custom bounds" do
       Enum.each(1..100, fn _ ->
         value = integer(-10, 10)
@@ -31,13 +29,11 @@ defmodule ExUtils.Tests.Random do
     end
   end
 
-  describe "string/0" do
+  describe "string/1" do
     test "returns ten characters by default" do
       assert byte_size(string()) == 10
     end
-  end
 
-  describe "string/1" do
     test "returns a URL-safe string of the given length" do
       value = string(25)
 
