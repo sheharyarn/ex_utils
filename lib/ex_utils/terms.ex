@@ -4,6 +4,63 @@ defmodule ExUtils.Terms do
   """
 
   @doc """
+  Evaluates if a value is blank.
+
+  Returns `true` for `nil`, `false`, `0`, empty strings, whitespace-only strings,
+  empty lists, and empty maps.
+
+  ## Examples
+
+  ```elixir
+  iex> blank?(0)
+  true
+  iex> blank?(nil)
+  true
+  iex> blank?(false)
+  true
+  iex> blank?("")
+  true
+  iex> blank?("  ")
+  true
+  iex> blank?([])
+  true
+  iex> blank?(%{})
+  true
+  iex> blank?([1])
+  false
+  iex> blank?("Hello")
+  false
+  ```
+  """
+  @spec blank?(any()) :: boolean()
+  def blank?(0), do: true
+  def blank?(nil), do: true
+  def blank?(false), do: true
+  def blank?(str) when is_binary(str), do: String.trim(str) == ""
+  def blank?(list) when is_list(list), do: list == []
+  def blank?(map) when is_map(map), do: map_size(map) == 0
+  def blank?(_), do: false
+
+  @doc """
+  Evaluates if a value is present.
+
+  This is the opposite of `blank?/1`.
+
+  ## Examples
+
+  ```elixir
+  iex> present?("Hello")
+  true
+  iex> present?(nil)
+  false
+  ```
+  """
+  @spec present?(any()) :: boolean()
+  def present?(term) do
+    not blank?(term)
+  end
+
+  @doc """
   Checks if the term is a struct as well as a map
 
   ## Example
