@@ -17,7 +17,7 @@ defmodule ExUtils.Terms do
   true
   ```
   """
-  @spec is_struct?(term :: term) :: boolean
+  @spec is_struct?(any()) :: boolean()
   def is_struct?(term)
   def is_struct?(%{__struct__: _}), do: true
   def is_struct?(_), do: false
@@ -34,7 +34,7 @@ defmodule ExUtils.Terms do
   false
   ```
   """
-  @spec is_pure_map?(term :: term) :: boolean
+  @spec is_pure_map?(any()) :: boolean()
   def is_pure_map?(term) do
     is_map(term) && !is_struct?(term)
   end
