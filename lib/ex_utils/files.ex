@@ -3,19 +3,19 @@ defmodule ExUtils.Files do
   Utility methods for working with files.
   """
 
-  @default_opts [precision: 2]
   @filesizes [KB: 1, MB: 2, GB: 3, TB: 4, PB: 5, EB: 6, ZB: 7, YB: 8]
   @byte_size 1024
 
   @doc """
-  Formats an `Integer` in a human-readable representation of filesize
+  Formats an integer byte count as a human-readable file size.
 
-  This method returns a string representing filesize in Bytes (e.g giving
-  it `1250` returns `"1.22 KB"`). It also accepts an optional value of
-  `:precision` that formats the number to the given no. of decimal places
-  (default is `2`).
+  For example, `1250` is formatted as `"1.22 KB"`.
 
-  ## Example
+  ## Options
+
+  - `:precision` - the number of decimal places to use. Defaults to `2`.
+
+  ## Examples
 
   ```elixir
   iex> ExUtils.Files.format_size(12)
@@ -37,15 +37,15 @@ defmodule ExUtils.Files do
   ```
   """
   @spec format_size(integer(), Keyword.t()) :: String.t()
-  def format_size(number, opts \\ []) when is_integer(number) do
+  def format_size(number, opts \\ []) when is_integer(number) and number >= 0 do
+    precision = Keyword.get(opts, :precision, 2)
+
     if number < @byte_size do
       "#{number} B"
     else
-      opts = Keyword.merge(@default_opts, opts)
-
       Enum.find_value(@filesizes, fn {name, power} ->
         if number < :math.pow(@byte_size, power + 1) do
-          "#{Float.round(number / :math.pow(@byte_size, power), opts[:precision])} #{name}"
+          "#{Float.round(number / :math.pow(@byte_size, power), precision)} #{name}"
         end
       end)
     end
