@@ -1,6 +1,6 @@
-defmodule ExUtils.Integers do
+defmodule ExUtils.Files do
   @moduledoc """
-  Utility methods for the `Integer` types
+  Utility methods for working with files.
   """
 
   @default_opts [precision: 2]
@@ -18,29 +18,28 @@ defmodule ExUtils.Integers do
   ## Example
 
   ```elixir
-  iex> ExUtils.Integers.to_filesize(12)
-  "12 Bytes"
-  iex> ExUtils.Integers.to_filesize(1234)
+  iex> ExUtils.Files.format_size(12)
+  "12 B"
+  iex> ExUtils.Files.format_size(1234)
   "1.21 KB"
-  iex> ExUtils.Integers.to_filesize(1_234_567)
+  iex> ExUtils.Files.format_size(1_234_567)
   "1.18 MB"
-  iex> ExUtils.Integers.to_filesize(1_234_567_890)
+  iex> ExUtils.Files.format_size(1_234_567_890)
   "1.15 GB"
-  iex> ExUtils.Integers.to_filesize(1_234_567_890_123)
+  iex> ExUtils.Files.format_size(1_234_567_890_123)
   "1.12 TB"
-
-  iex> ExUtils.Integers.to_filesize(12_345, precision: 1)
+  iex> ExUtils.Files.format_size(12_345, precision: 1)
   "12.1 KB"
-  iex> ExUtils.Integers.to_filesize(12_345, precision: 2)
+  iex> ExUtils.Files.format_size(12_345, precision: 2)
   "12.06 KB"
-  iex> ExUtils.Integers.to_filesize(12_345, precision: 3)
+  iex> ExUtils.Files.format_size(12_345, precision: 3)
   "12.056 KB"
   ```
   """
-  @spec to_filesize(number :: integer, opts :: Keyword.t()) :: String.t()
-  def to_filesize(number, opts \\ []) when is_integer(number) do
+  @spec format_size(integer(), Keyword.t()) :: String.t()
+  def format_size(number, opts \\ []) when is_integer(number) do
     if number < @byte_size do
-      "#{number} Bytes"
+      "#{number} B"
     else
       opts = Keyword.merge(@default_opts, opts)
 

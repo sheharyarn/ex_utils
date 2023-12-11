@@ -33,7 +33,7 @@ with their own utility methods:
  - [`ExUtils.Maps`][docs-maps]
  - [`ExUtils.Modules`][docs-modules]
  - [`ExUtils.Keywords`][docs-keywords]
- - [`ExUtils.Integers`][docs-integers]
+ - [`ExUtils.Files`][docs-files]
  - [`ExUtils.Random`][docs-random]
 
 
@@ -62,7 +62,7 @@ This package is available as open source under the terms of the [MIT License][li
   [docs-maps]:        https://hexdocs.pm/ex_utils/ExUtils.Maps.html
   [docs-modules]:     https://hexdocs.pm/ex_utils/ExUtils.Modules.html
   [docs-keywords]:    https://hexdocs.pm/ex_utils/ExUtils.Keywords.html
-  [docs-integers]:    https://hexdocs.pm/ex_utils/ExUtils.Integers.html
+  [docs-files]:       https://hexdocs.pm/ex_utils/ExUtils.Files.html
   [docs-random]:      https://hexdocs.pm/ex_utils/ExUtils.Random.html
 
   [inch-ci]:          https://inch-ci.org/github/sheharyarn/ex_utils
