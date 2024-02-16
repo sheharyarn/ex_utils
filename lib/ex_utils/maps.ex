@@ -77,7 +77,7 @@ defmodule ExUtils.Maps do
 
   ```elixir
   iex> map = %{"a" => 1, "b" => %{"c" => 3, "d" => 4}}
-  iex> ExUtils.Maps.symbolize_keys(map)
+  iex> ExUtils.Maps.atomize_keys(map)
   %{a: 1, b: %{"c" => 3, "d" => 4}}
   iex> ExUtils.Maps.atomize_keys(map, deep: true)
   %{a: 1, b: %{c: 3, d: 4}}
