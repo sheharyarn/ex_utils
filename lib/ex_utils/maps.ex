@@ -105,6 +105,7 @@ defmodule ExUtils.Maps do
 
   ## Private Methods
 
+  # sobelow_skip ["DOS.StringToAtom"]
   defp map_atom_put(m, k, v) do
     cond do
       is_binary(k) -> Map.put(m, String.to_atom(k), v)

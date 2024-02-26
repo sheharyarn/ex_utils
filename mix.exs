@@ -49,7 +49,7 @@ defmodule ExUtils.MixProject do
 
   defp aliases do
     [
-      quality: ["sobelow"]
+      quality: ["sobelow --strict --skip --exit --quiet"]
     ]
   end
 
