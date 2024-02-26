@@ -14,6 +14,7 @@ defmodule ExUtils.MixProject do
       elixir: "~> 1.14",
       description: description(),
       package: package(),
+      aliases: aliases(),
       deps: deps(),
 
       # ExDoc
@@ -44,6 +45,12 @@ defmodule ExUtils.MixProject do
     """
     Elixir utilities, helpers and shortcuts ⚡
     """
+  end
+
+  defp aliases do
+    [
+      quality: ["sobelow"]
+    ]
   end
 
   defp package do
