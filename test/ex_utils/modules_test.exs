@@ -18,16 +18,16 @@ defmodule ExUtils.Tests.Modules do
     end
   end
 
-  describe "methods/1" do
+  describe "functions/1" do
     test "returns a list of all functions in a module" do
-      animal_methods = methods(Animal)
-      person_methods = methods(Person)
+      animal_functions = functions(Animal)
+      person_functions = functions(Person)
 
-      assert length(animal_methods) == 0
-      assert length(person_methods) == 4
+      assert length(animal_functions) == 0
+      assert length(person_functions) == 4
 
-      assert Enum.member?(person_methods, {:old?, 1})
-      assert Enum.member?(person_methods, {:old?, 2})
+      assert Enum.member?(person_functions, {:old?, 1})
+      assert Enum.member?(person_functions, {:old?, 2})
     end
   end
 
