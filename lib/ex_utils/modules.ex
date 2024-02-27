@@ -63,31 +63,34 @@ defmodule ExUtils.Modules do
   defdelegate methods(module), to: __MODULE__, as: :functions
 
   @doc """
-  Checks if a Module exports a specific method
+  Checks if a Module exports a specific function.
 
   First argument must be a Module and the second argument can
   either be an `:atom` name of the function or a `{:atom, arity}`
   tuple.
 
-  Can also be directly accessed as `ExUtils.has_method?/2`.
-
   ## Example
 
   ```elixir
-  iex> ExUtils.has_method?(Map, :keys)
+  iex> ExUtils.has_function?(Map, :keys)
   true
-  iex> ExUtils.has_method?(Map, {:keys, 1})
+  iex> ExUtils.has_function?(Map, {:keys, 1})
   true
-  iex> ExUtils.has_method?(Map, {:keys, 2})
+  iex> ExUtils.has_function?(Map, {:keys, 2})
   false
   ```
   """
-  @spec has_method?(module :: module, method :: atom | {atom, number}) :: boolean
-  def has_method?(module, method) when is_atom(method) do
-    Keyword.has_key?(methods(module), method)
+  @spec has_function?(module(), atom() | {atom(), non_neg_integer()}) :: boolean()
+  def has_function?(module, name) when is_atom(name) do
+    module
+    |> functions()
+    |> Keyword.has_key?(name)
   end
 
-  def has_method?(module, {method, arity}) when is_atom(method) do
-    :erlang.function_exported(module, method, arity)
+  def has_function?(module, {name, arity}) when is_atom(name) and is_integer(arity) do
+    :erlang.function_exported(module, name, arity)
   end
+
+  @deprecated "Use ExUtils.Modules.has_function?/2 instead"
+  defdelegate has_method?(module, function), to: __MODULE__, as: :has_function?
 end

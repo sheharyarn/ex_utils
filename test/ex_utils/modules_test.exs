@@ -31,15 +31,15 @@ defmodule ExUtils.Tests.Modules do
     end
   end
 
-  describe "has_method?/2" do
+  describe "has_function?/2" do
     test "returns whether the function exists in the module" do
-      assert has_method?(Person, :old?) == true
-      assert has_method?(Person, {:old?, 1}) == true
-      assert has_method?(Person, {:old?, 2}) == true
+      assert has_function?(Person, :old?) == true
+      assert has_function?(Person, {:old?, 1}) == true
+      assert has_function?(Person, {:old?, 2}) == true
 
-      assert has_method?(Person, :unknown) == false
-      assert has_method?(Person, {:old?, 0}) == false
-      assert has_method?(Person, {:old?, 3}) == false
+      assert has_function?(Person, :unknown) == false
+      assert has_function?(Person, {:old?, 0}) == false
+      assert has_function?(Person, {:old?, 3}) == false
     end
   end
 
