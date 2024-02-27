@@ -5,7 +5,12 @@ defmodule ExUtils do
 
   # Delegated Methods
 
-  defdelegate methods(module), to: ExUtils.Modules
-  defdelegate functions(module), to: ExUtils.Modules
-  defdelegate has_method?(module, method), to: ExUtils.Modules
+  @deprecated "Use ExUtils.Modules.functions/1 instead"
+  defdelegate methods(module), to: ExUtils.Modules, as: :functions
+
+  @deprecated "Use ExUtils.Modules.functions/1 instead"
+  defdelegate functions(module), to: ExUtils.Modules, as: :functions
+
+  @deprecated "Use ExUtils.Modules.has_function?/2 instead"
+  defdelegate has_method?(module, function), to: ExUtils.Modules, as: :has_function?
 end
