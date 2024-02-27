@@ -15,9 +15,28 @@ defmodule ExUtils.Modules do
   "Another.Module"
   ```
   """
-  @spec name(module :: module) :: String.t()
+  @spec name(module()) :: String.t()
   def name(module) do
-    module |> Module.split() |> Enum.join(".")
+    module
+    |> Module.split()
+    |> Enum.join(".")
+  end
+
+  @doc """
+  Check if a module exists and is compiled
+
+  ## Example
+
+  ```elixir
+  iex> ExUtils.Modules.exists?(Map)
+  true
+  iex> ExUtils.Modules.exists?(NonExistentModule)
+  false
+  ```
+  """
+  @spec exists?(module()) :: boolean()
+  def exists?(module) do
+    Code.ensure_loaded?(module)
   end
 
   @doc """

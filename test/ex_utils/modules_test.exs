@@ -7,6 +7,17 @@ defmodule ExUtils.Tests.Modules do
   defmodule Animal do
   end
 
+  describe "exists?/1" do
+    test "returns true for loaded modules" do
+      assert exists?(Map)
+      assert exists?(Animal)
+    end
+
+    test "returns false for modules that do not exist" do
+      refute exists?(ExUtils.Tests.Modules.NonExistent)
+    end
+  end
+
   describe "methods/1" do
     test "returns a list of all functions in a module" do
       animal_methods = methods(Animal)
