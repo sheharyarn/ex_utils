@@ -13,6 +13,7 @@ defmodule ExUtils.Tests.Modules.Extend do
     def d, do: :d
 
     defoverridable b: 1
+
     def b(value) do
       {:overridden, value}
     end
