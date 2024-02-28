@@ -72,11 +72,11 @@ defmodule ExUtils.Modules do
   ## Example
 
   ```elixir
-  iex> ExUtils.has_function?(Map, :keys)
+  iex> ExUtils.Modules.has_function?(Map, :keys)
   true
-  iex> ExUtils.has_function?(Map, {:keys, 1})
+  iex> ExUtils.Modules.has_function?(Map, {:keys, 1})
   true
-  iex> ExUtils.has_function?(Map, {:keys, 2})
+  iex> ExUtils.Modules.has_function?(Map, {:keys, 2})
   false
   ```
   """
