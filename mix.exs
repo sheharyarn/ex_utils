@@ -31,8 +31,11 @@ defmodule ExUtils.MixProject do
 
   def application do
     [
-      env: [otp_app: nil],
-      extra_applications: [:crypto]
+      env: [
+        otp_app: nil,
+        testing?: false
+      ],
+      extra_applications: [:crypto, :logger]
     ]
   end
 
