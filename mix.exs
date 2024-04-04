@@ -30,7 +30,10 @@ defmodule ExUtils.MixProject do
   end
 
   def application do
-    [extra_applications: [:crypto]]
+    [
+      env: [otp_app: nil],
+      extra_applications: [:crypto]
+    ]
   end
 
   defp deps do
@@ -49,9 +52,10 @@ defmodule ExUtils.MixProject do
 
   defp aliases do
     [
+      sobelow: ["sobelow --strict --skip --exit"],
       quality: [
         "format --check-formatted",
-        "sobelow --strict --skip --exit --quiet"
+        "sobelow"
       ]
     ]
   end
