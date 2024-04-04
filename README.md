@@ -23,6 +23,21 @@ end
 
 
 
+## Configuration
+
+Some utilities require specifying your OTP application in your config.
+Add the following to your `config/config.exs`:
+
+```elixir
+import Config
+
+config :ex_utils, otp_app: :your_app
+```
+
+Replace `:your_app` with your application's OTP app name.
+
+
+
 ## Methods
 
 It's not possible to list all functions here, but you should check out the
