@@ -1,5 +1,5 @@
 defmodule ExUtils.Tests.Maps do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   import ExUtils.Maps
 
   doctest ExUtils.Maps

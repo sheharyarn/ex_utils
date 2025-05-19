@@ -1,5 +1,5 @@
 defmodule ExUtils.Tests.Modules.Extend do
-  use ExUnit.Case
+  use ExUnit.Case, async: false
 
   defmodule Original do
     def a, do: :a

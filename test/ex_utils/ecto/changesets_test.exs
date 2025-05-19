@@ -1,5 +1,5 @@
 defmodule ExUtils.Tests.Ecto.Changesets do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   import ExUtils.Ecto.Changesets
 
   doctest ExUtils.Ecto.Changesets

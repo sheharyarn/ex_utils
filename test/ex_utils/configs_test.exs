@@ -1,5 +1,5 @@
 defmodule ExUtils.Tests.Configs do
-  use ExUnit.Case
+  use ExUnit.Case, async: false
   import ExUtils.Configs
 
   @context :ex_utils_configs_test

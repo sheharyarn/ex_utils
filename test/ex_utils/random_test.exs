@@ -1,5 +1,5 @@
 defmodule ExUtils.Tests.Random do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   import ExUtils.Random
 
   describe "boolean/0" do

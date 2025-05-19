@@ -1,5 +1,5 @@
 defmodule ExUtils.Tests.Runner do
-  use ExUnit.Case
+  use ExUnit.Case, async: false
   import ExUtils.Runner
 
   setup do

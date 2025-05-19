@@ -1,5 +1,5 @@
 defmodule ExUtils.Tests.Terms do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   import ExUtils.Terms
 
   doctest ExUtils.Terms
