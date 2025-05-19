@@ -41,6 +41,7 @@ defmodule ExUtils.MixProject do
 
   defp deps do
     [
+      {:ecto, "~> 3.12.5", optional: true},
       {:ex_doc, ">= 0.0.0", only: :dev},
       {:inch_ex, ">= 0.0.0", only: :docs},
       {:sobelow, "~> 0.13.0", only: :dev}
