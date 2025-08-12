@@ -46,5 +46,45 @@ if ExUtils.Modules.exists?(Ecto) do
     defmacro greatest(left, right) do
       quote do: fragment("GREATEST(?, ?)", unquote(left), unquote(right))
     end
+
+    @doc """
+    Use conditionals in Ecto queries with PG's `CASE(...)` statement.
+
+    ## Example
+
+    ```elixir
+    # Use `pg_case` to represent Postgres' `CASE` statement
+    from user in User,
+      select: %{
+        name: user.name,
+        group:
+          pg_case do
+            user.age < 1 -> :infant
+            user.age < 3 -> :toddler
+            user.age < 13 -> :child
+            user.age < 18 -> :teenager
+            true -> :adult
+          end
+      }
+    ```
+    """
+    defmacro pg_case(do: block) do
+      bindings =
+        block
+        |> Enum.reduce([], fn {:->, _, [[clause], branch]}, acc -> [branch, clause | acc] end)
+        |> Enum.reverse()
+
+      sql =
+        IO.iodata_to_binary([
+          "CASE",
+          List.duplicate(" WHEN ? THEN ?", div(length(bindings), 2)),
+          " ",
+          "END"
+        ])
+
+      quote do
+        fragment(unquote(sql), unquote_splicing(bindings))
+      end
+    end
   end
 end

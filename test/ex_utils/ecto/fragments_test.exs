@@ -14,6 +14,44 @@ defmodule ExUtils.Tests.Ecto.Fragments do
     end
   end
 
+  describe "pg_case/1" do
+    test "builds a case fragment from each condition and result" do
+      query =
+        from user in "users",
+          select: %{
+            group:
+              pg_case do
+                user.age < 1 -> :infant
+                user.age < 3 -> :toddler
+                user.age < 13 -> :child
+                user.age < 18 -> :teenager
+                true -> :adult
+              end
+          }
+
+      expected_query =
+        from user in "users",
+          select: %{
+            group:
+              fragment(
+                "CASE WHEN ? THEN ? WHEN ? THEN ? WHEN ? THEN ? WHEN ? THEN ? WHEN ? THEN ? END",
+                user.age < 1,
+                :infant,
+                user.age < 3,
+                :toddler,
+                user.age < 13,
+                :child,
+                user.age < 18,
+                :teenager,
+                true,
+                :adult
+              )
+          }
+
+      assert_query(query, expected_query)
+    end
+  end
+
   defp assert_query(query, expected_query) do
     assert normalize_query(query) == normalize_query(expected_query)
   end
