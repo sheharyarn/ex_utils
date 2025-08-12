@@ -86,5 +86,128 @@ if ExUtils.Modules.exists?(Ecto) do
         fragment(unquote(sql), unquote_splicing(bindings))
       end
     end
+
+    @doc """
+    Round a numeric value to the given precision.
+
+    The `precision` must be an integer. When positive, it rounds to the given
+    decimal places and when negative, it rounds to the left of the decimal (in
+    the tens, hundreds, etc. places). It defaults to `0`.
+
+    Using this may conflict with the Kernel's default imports, so you may have
+    to exclude it with `import Kernel, except: [round: 1]`.
+
+    Also see `ceil/2` and `floor/2`.
+
+    ## Examples
+
+    ```elixir
+    # Round to a whole number
+    from measurement in "measurements",
+      select: round(measurement.value)
+
+    # Round to 3 decimal places
+    from measurement in "measurements",
+      select: round(measurement.value, 3)
+
+    # Round to the hundreds
+    from invoice in Invoice,
+      select: round(invoice.total, -2)
+    ```
+    """
+    defmacro round(value, precision \\ 0) do
+      precision = expand_precision!(precision, __CALLER__)
+
+      quote do: fragment("ROUND(?, ?)", unquote(value), unquote(precision))
+    end
+
+    @doc """
+    Round a numeric value down to the given precision.
+
+    The `precision` must be an integer. When positive, it rounds down to the
+    given decimal places and when negative, it rounds down to the left of the
+    decimal (in the tens, hundreds, etc. places). It defaults to `0`.
+
+    Using this may conflict with the Kernel's default imports, so you may have
+    to exclude it with `import Kernel, except: [floor: 1]`.
+
+    Also see `round/2` and `ceil/2`.
+
+    ## Examples
+
+    ```elixir
+    # Round down to a whole number
+    from measurement in "measurements",
+      select: floor(measurement.value)
+
+    # Round down to 3 decimal places
+    from measurement in "measurements",
+      select: floor(measurement.value, 3)
+
+    # Round down to the hundreds
+    from invoice in Invoice,
+      select: floor(invoice.total, -2)
+    ```
+    """
+    defmacro floor(value, precision \\ 0) do
+      precision = expand_precision!(precision, __CALLER__)
+
+      quote do
+        fragment(
+          "FLOOR(? * POWER(10, ?)) / POWER(10, ?)",
+          unquote(value),
+          unquote(precision),
+          unquote(precision)
+        )
+      end
+    end
+
+    @doc """
+    Round a numeric value up to the given precision.
+
+    The `precision` must be an integer. When positive, it rounds up to the
+    given decimal places and when negative, it rounds up to the left of the
+    decimal (in the tens, hundreds, etc. places). It defaults to `0`.
+
+    Using this may conflict with the Kernel's default imports, so you may have
+    to exclude it with `import Kernel, except: [ceil: 1]`.
+
+    Also see `round/2` and `floor/2`.
+
+    ## Examples
+
+    ```elixir
+    # Round up to a whole number
+    from measurement in "measurements",
+      select: ceil(measurement.value)
+
+    # Round up to 3 decimal places
+    from measurement in "measurements",
+      select: ceil(measurement.value, 3)
+
+    # Round up to the hundreds
+    from invoice in Invoice,
+      select: ceil(invoice.total, -2)
+    ```
+    """
+    defmacro ceil(value, precision \\ 0) do
+      precision = expand_precision!(precision, __CALLER__)
+
+      quote do
+        fragment(
+          "CEIL(? * POWER(10, ?)) / POWER(10, ?)",
+          unquote(value),
+          unquote(precision),
+          unquote(precision)
+        )
+      end
+    end
+
+    defp expand_precision!(precision, caller) do
+      case Macro.expand(precision, caller) do
+        precision when is_integer(precision) -> precision
+        _other -> raise ArgumentError, "precision must be an integer"
+      end
+    end
   end
 end

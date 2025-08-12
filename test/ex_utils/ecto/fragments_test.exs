@@ -8,9 +8,9 @@ defmodule ExUtils.Tests.Ecto.Fragments do
   describe "greatest/2" do
     test "builds a greatest fragment" do
       query = from score in "scores", select: greatest(score.current, score.previous)
-      expected_query = from score in "scores", select: fragment("GREATEST(?, ?)", score.current, score.previous)
+      expected = from score in "scores", select: fragment("GREATEST(?, ?)", score.current, score.previous)
 
-      assert_query(query, expected_query)
+      assert_query(query, expected)
     end
   end
 
@@ -29,7 +29,7 @@ defmodule ExUtils.Tests.Ecto.Fragments do
               end
           }
 
-      expected_query =
+      expected =
         from user in "users",
           select: %{
             group:
@@ -48,19 +48,103 @@ defmodule ExUtils.Tests.Ecto.Fragments do
               )
           }
 
-      assert_query(query, expected_query)
+      assert_query(query, expected)
     end
   end
 
-  defp assert_query(query, expected_query) do
-    assert normalize_query(query) == normalize_query(expected_query)
+  describe "round/2" do
+    test "rounds to zero precision by default" do
+      query = from measurement in "measurements", select: round(measurement.value)
+      expected = from measurement in "measurements", select: fragment("ROUND(?, ?)", measurement.value, 0)
+
+      assert_query(query, expected)
+    end
+
+    test "rounds to a positive precision" do
+      query = from measurement in "measurements", select: round(measurement.value, 3)
+      expected = from measurement in "measurements", select: fragment("ROUND(?, ?)", measurement.value, 3)
+
+      assert_query(query, expected)
+    end
+
+    test "rounds to a negative precision" do
+      query = from invoice in "invoices", select: round(invoice.total, -2)
+      expected = from invoice in "invoices", select: fragment("ROUND(?, ?)", invoice.total, -2)
+
+      assert_query(query, expected)
+    end
   end
 
-  defp normalize_query(query) do
-    %{
-      query
-      | from: %{query.from | file: nil, line: nil},
-        select: %{query.select | file: nil, line: nil}
-    }
+  describe "floor/2" do
+    test "rounds down to zero precision by default" do
+      query = from measurement in "measurements", select: floor(measurement.value)
+
+      expected =
+        from measurement in "measurements",
+          select: fragment("FLOOR(? * POWER(10, ?)) / POWER(10, ?)", measurement.value, 0, 0)
+
+      assert_query(query, expected)
+    end
+
+    test "rounds down to a positive precision" do
+      query = from measurement in "measurements", select: floor(measurement.value, 3)
+
+      expected =
+        from measurement in "measurements",
+          select: fragment("FLOOR(? * POWER(10, ?)) / POWER(10, ?)", measurement.value, 3, 3)
+
+      assert_query(query, expected)
+    end
+
+    test "rounds down to a negative precision" do
+      query = from invoice in "invoices", select: floor(invoice.total, -2)
+
+      expected =
+        from invoice in "invoices",
+          select: fragment("FLOOR(? * POWER(10, ?)) / POWER(10, ?)", invoice.total, -2, -2)
+
+      assert_query(query, expected)
+    end
+  end
+
+  describe "ceil/2" do
+    test "rounds up to zero precision by default" do
+      query = from measurement in "measurements", select: ceil(measurement.value)
+
+      expected =
+        from measurement in "measurements",
+          select: fragment("CEIL(? * POWER(10, ?)) / POWER(10, ?)", measurement.value, 0, 0)
+
+      assert_query(query, expected)
+    end
+
+    test "rounds up to a positive precision" do
+      query = from measurement in "measurements", select: ceil(measurement.value, 3)
+
+      expected =
+        from measurement in "measurements",
+          select: fragment("CEIL(? * POWER(10, ?)) / POWER(10, ?)", measurement.value, 3, 3)
+
+      assert_query(query, expected)
+    end
+
+    test "rounds up to a negative precision" do
+      query = from invoice in "invoices", select: ceil(invoice.total, -2)
+
+      expected =
+        from invoice in "invoices",
+          select: fragment("CEIL(? * POWER(10, ?)) / POWER(10, ?)", invoice.total, -2, -2)
+
+      assert_query(query, expected)
+    end
+  end
+
+  defp assert_query(query, expected) do
+    [query, expected] =
+      for q <- [query, expected] do
+        %{q | from: %{q.from | file: nil, line: nil}, select: %{q.select | file: nil, line: nil}}
+      end
+
+    assert query == expected
   end
 end
