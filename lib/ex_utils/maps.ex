@@ -61,55 +61,68 @@ defmodule ExUtils.Maps do
   defp do_from_struct(other, _opts), do: other
 
   @doc """
-  Converts all (string) map keys to atoms
+  Atomize the given keys of a map.
 
-  By default converts all string keys of the map to atoms at the
-  first level. You can recursively convert keys in the base map and
-  all sub-maps by specifiying `deep: true` in options
-
-  You can also call `:symbolize_keys/2` instead of `:atomize_keys/2`
+  Passed keys must be a list of atoms or `:all`. Using a list of atoms is
+  the recommended way. If you use `:all`, you must be careful to avoid
+  calling it on external or unknown data, which can grow the Erlang Atom table,
+  and may even cause it to overload.
 
   ## Options
 
-  Only accepts one option: `deep` with default value `false`
+  - `:deep` - Perform conversion for keys in nested maps. Defaults to `false`.
+  - `:drop` - Drop unconverted keys. Defaults to `false`.
+
+  Original string keys selected for conversion are always dropped.
 
   ## Examples
 
   ```elixir
   iex> map = %{"a" => 1, "b" => %{"c" => 3, "d" => 4}}
-  iex> ExUtils.Maps.atomize_keys(map)
+  iex> ExUtils.Maps.atomize_keys(map, [:a, :b])
   %{a: 1, b: %{"c" => 3, "d" => 4}}
-  iex> ExUtils.Maps.atomize_keys(map, deep: true)
+  iex> ExUtils.Maps.atomize_keys(map, [:a, :b], deep: true)
+  %{a: 1, b: %{"c" => 3, "d" => 4}}
+  iex> ExUtils.Maps.atomize_keys(map, [:a, :b, :d], deep: true)
+  %{a: 1, b: %{"c" => 3, d: 4}}
+  iex> ExUtils.Maps.atomize_keys(map, [:a], drop: true)
+  %{a: 1}
+  iex> ExUtils.Maps.atomize_keys(map, :all, deep: true)
   %{a: 1, b: %{c: 3, d: 4}}
   ```
   """
-  @spec atomize_keys(map :: Map.t(), opts :: Keyword.t()) :: Map.t()
-  def atomize_keys(map, opts \\ [])
+  @spec atomize_keys(map(), :all | [atom()], Keyword.t()) :: map()
+  def atomize_keys(%{} = map, keys, opts \\ []) when keys == :all or is_list(keys) do
+    all? = keys == :all
+    deep? = Keyword.get(opts, :deep, false)
+    drop? = Keyword.get(opts, :drop, false)
+    string_keys = if all?, do: [], else: Enum.map(keys, &to_string/1)
 
-  def atomize_keys(map, opts) do
-    opts = Keyword.merge([deep: false], opts)
-
-    Enum.reduce(map, %{}, fn {k, v}, m ->
-      v =
-        case is_map(v) && opts[:deep] do
-          true -> atomize_keys(v, opts)
-          false -> v
+    map
+    |> Enum.map(fn {key, value} ->
+      value =
+        if deep? and is_map(value) and not is_struct(value) do
+          atomize_keys(value, keys, opts)
+        else
+          value
         end
 
-      map_atom_put(m, k, v)
+      cond do
+        all? and is_atom(key) -> {key, value}
+        all? and is_binary(key) -> {String.to_atom(key), value}
+        is_atom(key) and key in keys -> {key, value}
+        is_binary(key) and key in string_keys -> {String.to_existing_atom(key), value}
+        drop? -> nil
+        true -> {key, value}
+      end
     end)
+    |> Enum.reject(&is_nil/1)
+    |> Map.new()
   end
 
-  @deprecated "Use ExUtils.Maps.atomize_keys/2 instead"
-  defdelegate symbolize_keys(map, opts \\ []), to: __MODULE__, as: :atomize_keys
+  @deprecated "Use ExUtils.Maps.atomize_keys/3 instead"
+  def atomize_keys(%{} = map), do: atomize_keys(map, :all, deep: false)
 
-  ## Private Methods
-
-  # sobelow_skip ["DOS.StringToAtom"]
-  defp map_atom_put(m, k, v) do
-    cond do
-      is_binary(k) -> Map.put(m, String.to_atom(k), v)
-      true -> Map.put(m, k, v)
-    end
-  end
+  @deprecated "Use ExUtils.Maps.atomize_keys/3 instead"
+  def symbolize_keys(map, opts \\ []), do: atomize_keys(map, :all, opts)
 end

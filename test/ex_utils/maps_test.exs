@@ -65,38 +65,38 @@ defmodule ExUtils.Tests.Maps do
     end
   end
 
-  describe "atomize_keys/2" do
-    test "converts keys at the first level", context do
-      map = atomize_keys(context[:map])
-
-      assert map[:a] == 1
-      assert map["a"] == nil
-
-      assert map[:b][:c] == nil
-      assert map[:b][:d] == nil
-      assert map[:b]["c"] == 3
-      assert map[:b]["d"] == 4
+  describe "atomize_keys/3" do
+    test "atomizes selected keys at the first level", context do
+      assert atomize_keys(context.map, [:a]) == %{
+               "b" => %{"c" => 3, "d" => 4},
+               a: 1
+             }
     end
 
-    test "only converts string keys" do
-      map = atomize_keys(%{"a" => 0, 3 => 6, :atom => "13", {:a, :b} => 5})
+    test "preserves atom and non-string keys" do
+      map = %{"a" => 0, 3 => 6, {:a, :b} => 5, atom: "13"}
 
-      assert map[:a] == 0
-      assert map[3] == 6
-      assert map[:atom] == "13"
-      assert map[{:a, :b}] == 5
+      assert atomize_keys(map, [:a]) == %{3 => 6, {:a, :b} => 5, a: 0, atom: "13"}
     end
 
-    test "recursively converts keys when deep is true", context do
-      map = atomize_keys(context[:map], deep: true)
+    test "atomizes selected keys in nested maps when deep is true", context do
+      assert atomize_keys(context.map, [:d], deep: true) == %{
+               "a" => 1,
+               "b" => %{"c" => 3, d: 4}
+             }
+    end
 
-      assert map[:a] == 1
-      assert map["a"] == nil
+    test "atomizes all string keys when passed all", context do
+      assert atomize_keys(context.map, :all, deep: true) == %{
+               a: 1,
+               b: %{c: 3, d: 4}
+             }
+    end
 
-      assert map[:b][:c] == 3
-      assert map[:b][:d] == 4
-      assert map[:b]["c"] == nil
-      assert map[:b]["d"] == nil
+    test "drops unselected keys when drop is true" do
+      map = %{"a" => 1, "b" => 2, 3 => 4, atom: 5}
+
+      assert atomize_keys(map, [:a, :atom], drop: true) == %{a: 1, atom: 5}
     end
   end
 end
