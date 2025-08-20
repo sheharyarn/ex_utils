@@ -109,7 +109,7 @@ defmodule ExUtils.Maps do
 
       cond do
         all? and is_atom(key) -> {key, value}
-        all? and is_binary(key) -> {String.to_atom(key), value}
+        all? and is_binary(key) -> {to_unsafe_atom(key), value}
         is_atom(key) and key in keys -> {key, value}
         is_binary(key) and key in string_keys -> {String.to_existing_atom(key), value}
         drop? -> nil
@@ -119,6 +119,9 @@ defmodule ExUtils.Maps do
     |> Enum.reject(&is_nil/1)
     |> Map.new()
   end
+
+  # sobelow_skip ["DOS.StringToAtom"]
+  defp to_unsafe_atom(string), do: String.to_atom(string)
 
   @deprecated "Use ExUtils.Maps.atomize_keys/3 instead"
   def atomize_keys(%{} = map), do: atomize_keys(map, :all, deep: false)
