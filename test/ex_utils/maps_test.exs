@@ -13,7 +13,10 @@ defmodule ExUtils.Tests.Maps do
   end
 
   setup do
-    [map: %{"a" => 1, "b" => %{"c" => 3, "d" => 4}}]
+    [
+      map: %{"a" => 1, "b" => %{"c" => 3, "d" => 4}},
+      atom_map: %{a: 1, b: %{c: 3, d: 4}}
+    ]
   end
 
   describe "from_struct/2" do
@@ -97,6 +100,49 @@ defmodule ExUtils.Tests.Maps do
       map = %{"a" => 1, "b" => 2, 3 => 4, atom: 5}
 
       assert atomize_keys(map, [:a, :atom], drop: true) == %{a: 1, atom: 5}
+    end
+  end
+
+  describe "stringify_keys/3" do
+    test "stringifies selected keys at the first level", context do
+      assert stringify_keys(context.atom_map, [:a]) == %{
+               "a" => 1,
+               b: %{c: 3, d: 4}
+             }
+    end
+
+    test "preserves string and non-atom keys" do
+      map = %{3 => 6, {:a, :b} => 5, "string" => "13", a: 0}
+
+      assert stringify_keys(map, [:a, :string]) == %{
+               "a" => 0,
+               "string" => "13",
+               3 => 6,
+               {:a, :b} => 5
+             }
+    end
+
+    test "stringifies selected keys in nested maps when deep is true", context do
+      assert stringify_keys(context.atom_map, [:d], deep: true) == %{
+               a: 1,
+               b: %{"d" => 4, c: 3}
+             }
+    end
+
+    test "stringifies all atom keys when passed all", context do
+      assert stringify_keys(context.atom_map, :all, deep: true) == %{
+               "a" => 1,
+               "b" => %{"c" => 3, "d" => 4}
+             }
+    end
+
+    test "drops unselected keys when drop is true" do
+      map = %{3 => 4, "string" => 5, a: 1, b: 2}
+
+      assert stringify_keys(map, [:a, :string], drop: true) == %{
+               "a" => 1,
+               "string" => 5
+             }
     end
   end
 end

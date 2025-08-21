@@ -73,7 +73,7 @@ defmodule ExUtils.Maps do
   - `:deep` - Perform conversion for keys in nested maps. Defaults to `false`.
   - `:drop` - Drop unconverted keys. Defaults to `false`.
 
-  Original string keys selected for conversion are always dropped.
+  Original, converted string keys are always dropped.
 
   ## Examples
 
@@ -96,7 +96,7 @@ defmodule ExUtils.Maps do
     all? = keys == :all
     deep? = Keyword.get(opts, :deep, false)
     drop? = Keyword.get(opts, :drop, false)
-    string_keys = if all?, do: [], else: Enum.map(keys, &to_string/1)
+    string_keys = (all? && []) || Enum.map(keys, &to_string/1)
 
     map
     |> Enum.map(fn {key, value} ->
@@ -128,4 +128,61 @@ defmodule ExUtils.Maps do
 
   @deprecated "Use ExUtils.Maps.atomize_keys/3 instead"
   def symbolize_keys(map, opts \\ []), do: atomize_keys(map, :all, opts)
+
+  @doc """
+  Converts the given map keys to strings.
+
+  Passed keys must be a list of atoms or `:all`.
+
+  ## Options
+
+  - `:deep` - Perform conversion for keys in nested maps. Defaults to `false`.
+  - `:drop` - Drop unconverted keys. Defaults to `false`.
+
+  Original, converted atom keys are always dropped.
+
+  ## Examples
+
+  ```elixir
+  iex> map = %{a: 1, b: %{c: 3, d: 4}}
+  iex> ExUtils.Maps.stringify_keys(map, [:a, :b])
+  %{"a" => 1, "b" => %{c: 3, d: 4}}
+  iex> ExUtils.Maps.stringify_keys(map, [:a, :b], deep: true)
+  %{"a" => 1, "b" => %{c: 3, d: 4}}
+  iex> ExUtils.Maps.stringify_keys(map, [:a, :b, :d], deep: true)
+  %{"a" => 1, "b" => %{:c => 3, "d" => 4}}
+  iex> ExUtils.Maps.stringify_keys(map, [:a], drop: true)
+  %{"a" => 1}
+  iex> ExUtils.Maps.stringify_keys(map, :all, deep: true)
+  %{"a" => 1, "b" => %{"c" => 3, "d" => 4}}
+  ```
+  """
+  @spec stringify_keys(map(), :all | [atom()], Keyword.t()) :: map()
+  def stringify_keys(%{} = map, keys, opts \\ []) when keys == :all or is_list(keys) do
+    all? = keys == :all
+    deep? = Keyword.get(opts, :deep, false)
+    drop? = Keyword.get(opts, :drop, false)
+    string_keys = (all? && []) || Enum.map(keys, &to_string/1)
+
+    map
+    |> Enum.map(fn {key, value} ->
+      value =
+        if deep? and is_map(value) and not is_struct(value) do
+          stringify_keys(value, keys, opts)
+        else
+          value
+        end
+
+      cond do
+        all? and is_binary(key) -> {key, value}
+        all? and is_atom(key) -> {to_string(key), value}
+        is_binary(key) and key in string_keys -> {key, value}
+        is_atom(key) and key in keys -> {to_string(key), value}
+        drop? -> nil
+        true -> {key, value}
+      end
+    end)
+    |> Enum.reject(&is_nil/1)
+    |> Map.new()
+  end
 end
