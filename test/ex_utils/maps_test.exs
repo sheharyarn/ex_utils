@@ -159,4 +159,26 @@ defmodule ExUtils.Tests.Maps do
       assert drop_blank_values(map, blanks: [nil, 0, ""]) == %{active: false}
     end
   end
+
+  describe "maybe_put/4" do
+    test "puts non-blank values" do
+      assert maybe_put(%{}, :name, "John") == %{name: "John"}
+      assert maybe_put(%{name: "Mary"}, :name, "John") == %{name: "John"}
+      assert maybe_put(%{}, :active, false) == %{active: false}
+      assert maybe_put(%{}, :count, 0) == %{count: 0}
+    end
+
+    test "ignores values considered blank by default" do
+      map = %{name: "John"}
+
+      assert maybe_put(map, :name, nil) == map
+      assert maybe_put(map, :name, "") == map
+      assert maybe_put(map, :name, []) == map
+    end
+
+    test "uses custom blank values" do
+      assert maybe_put(%{}, :count, 0, blanks: [nil, 0]) == %{}
+      assert maybe_put(%{}, :active, false, blanks: [nil, 0]) == %{active: false}
+    end
+  end
 end

@@ -213,4 +213,38 @@ defmodule ExUtils.Maps do
     |> Enum.reject(fn {_key, value} -> value in blanks end)
     |> Map.new()
   end
+
+  @doc """
+  Puts a key-value pair into a map when the value is not blank.
+
+  ## Options
+
+  - `:blanks` - Values considered blank. Defaults to `#{inspect(@blanks)}`.
+
+  ## Examples
+
+  ```elixir
+  iex> ExUtils.Maps.maybe_put(%{}, :name, "John")
+  %{name: "John"}
+
+  iex> ExUtils.Maps.maybe_put(%{name: "Mary"}, :name, "John")
+  %{name: "John"}
+
+  iex> ExUtils.Maps.maybe_put(%{name: "John"}, :name, nil)
+  %{name: "John"}
+
+  iex> ExUtils.Maps.maybe_put(%{}, :count, 0, blanks: [nil, 0])
+  %{}
+  ```
+  """
+  @spec maybe_put(map(), any(), any(), Keyword.t()) :: map()
+  def maybe_put(%{} = map, key, value, opts \\ []) do
+    blanks = Keyword.get(opts, :blanks, @blanks)
+
+    if value in blanks do
+      map
+    else
+      Map.put(map, key, value)
+    end
+  end
 end
