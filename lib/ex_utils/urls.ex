@@ -22,7 +22,7 @@ defmodule ExUtils.URLs do
   ```
   """
   @spec merge_query(t(), Enumerable.t()) :: t()
-  def merge_query(url, params) do
+  def merge_query(url, params) when is_binary(url) do
     %{query: query} = uri = URI.parse(url)
     params = params |> Map.new() |> ExUtils.Maps.stringify_keys(:all)
 
@@ -37,5 +37,33 @@ defmodule ExUtils.URLs do
       end
 
     URI.to_string(%{uri | query: new_query})
+  end
+
+  @doc """
+  Normalizes a URL's percent encoding.
+
+  Already encoded characters are not double-encoded.
+
+  ## Examples
+
+  ```elixir
+  iex> normalize_encoding("/search results?q=hello world")
+  "/search%20results?q=hello%20world"
+
+  iex> normalize_encoding("/café/menu")
+  "/caf%C3%A9/menu"
+
+  iex> normalize_encoding(~s'/files/{draft}|notes"')
+  "/files/%7Bdraft%7D%7Cnotes%22"
+
+  iex> normalize_encoding("https://example.com/some%2Fpath")
+  "https://example.com/some/path"
+  ```
+  """
+  @spec normalize_encoding(t()) :: t()
+  def normalize_encoding(url) when is_binary(url) do
+    url
+    |> URI.decode()
+    |> URI.encode()
   end
 end

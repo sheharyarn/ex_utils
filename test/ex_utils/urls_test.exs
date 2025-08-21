@@ -34,4 +34,38 @@ defmodule ExUtils.Tests.URLs do
                "https://app.com/path?a=1&b=2#details"
     end
   end
+
+  describe "normalize_encoding/1" do
+    test "encodes spaces in paths and query values" do
+      assert normalize_encoding("/search results?q=hello world") ==
+               "/search%20results?q=hello%20world"
+    end
+
+    test "encodes Unicode characters" do
+      assert normalize_encoding("/café/menu") == "/caf%C3%A9/menu"
+    end
+
+    test "encodes unsafe punctuation" do
+      assert normalize_encoding(~s'/files/{draft}|notes"') ==
+               "/files/%7Bdraft%7D%7Cnotes%22"
+    end
+
+    test "does not double-encode encoded characters" do
+      assert normalize_encoding("https://example.com/some%20path") ==
+               "https://example.com/some%20path"
+    end
+
+    test "turns an encoded slash into a path separator" do
+      assert normalize_encoding("/files/folder%2Freport.pdf") == "/files/folder/report.pdf"
+    end
+
+    test "turns encoded query delimiters into URL syntax" do
+      assert normalize_encoding("/redirect?next=%2Faccount%3Ftab%3Dsettings") ==
+               "/redirect?next=/account?tab=settings"
+    end
+
+    test "turns an encoded hash into a fragment marker" do
+      assert normalize_encoding("/search?q=section%23details") == "/search?q=section#details"
+    end
+  end
 end
