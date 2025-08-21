@@ -7,6 +7,8 @@ defmodule ExUtils.Maps do
   @dropped_structs [Ecto.Association.NotLoaded]
   @ignored_structs [Date, Time, DateTime, NaiveDateTime]
 
+  @blanks [nil, "", []]
+
   @doc """
   Converts a struct/map to plain map.
 
@@ -183,6 +185,32 @@ defmodule ExUtils.Maps do
       end
     end)
     |> Enum.reject(&is_nil/1)
+    |> Map.new()
+  end
+
+  @doc """
+  Removes all keys with blank values.
+
+  ## Options
+
+  - `:blanks` - Values considered blank. Defaults to `#{inspect(@blanks)}`.
+
+  ## Examples
+
+  ```elixir
+  iex> ExUtils.Maps.drop_blank_values(%{a: 123, b: nil, c: "", d: [], e: false})
+  %{a: 123, e: false}
+
+  iex> ExUtils.Maps.drop_blank_values(%{count: 0, active: false}, blanks: [nil, 0])
+  %{active: false}
+  ```
+  """
+  @spec drop_blank_values(map(), Keyword.t()) :: map()
+  def drop_blank_values(%{} = map, opts \\ []) do
+    blanks = Keyword.get(opts, :blanks, @blanks)
+
+    map
+    |> Enum.reject(fn {_key, value} -> value in blanks end)
     |> Map.new()
   end
 end

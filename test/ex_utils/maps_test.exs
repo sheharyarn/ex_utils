@@ -145,4 +145,18 @@ defmodule ExUtils.Tests.Maps do
              }
     end
   end
+
+  describe "drop_blank_values/2" do
+    test "removes values considered blank by default" do
+      map = %{nil: nil, string: "", list: [], false: false, zero: 0, map: %{}}
+
+      assert drop_blank_values(map) == %{false: false, zero: 0, map: %{}}
+    end
+
+    test "uses custom blank values" do
+      map = %{count: 0, active: false, name: ""}
+
+      assert drop_blank_values(map, blanks: [nil, 0, ""]) == %{active: false}
+    end
+  end
 end
