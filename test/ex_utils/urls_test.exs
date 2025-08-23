@@ -68,4 +68,31 @@ defmodule ExUtils.Tests.URLs do
       assert normalize_encoding("/search?q=section%23details") == "/search?q=section#details"
     end
   end
+
+  describe "extract/1" do
+    test "extracts HTTP and HTTPS URLs in source order" do
+      text = "First https://one.example/path then http://two.example"
+
+      assert extract(text) == ["https://one.example/path", "http://two.example"]
+    end
+
+    test "includes ports, queries, and fragments" do
+      text = "API https://api.example.com:4000/v1?active=true#results"
+
+      assert extract(text) == ["https://api.example.com:4000/v1?active=true#results"]
+    end
+
+    test "includes the www subdomain" do
+      assert extract("Visit https://www.example.com") == ["https://www.example.com"]
+    end
+
+    test "ignores bare domains and unsupported schemes" do
+      assert extract("example.com ftp://example.com file://example.com/path") == []
+    end
+
+    test "returns an empty list when the string contains no URLs" do
+      assert extract("") == []
+      assert extract("some gibberish") == []
+    end
+  end
 end

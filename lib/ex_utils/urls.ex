@@ -3,7 +3,10 @@ defmodule ExUtils.URLs do
   Elixir utility functions to work with URLs and URI structs.
   """
 
+  @typedoc "A valid URI string"
   @type t :: String.t()
+
+  @url_regex ~r/(https?):\/\/(?:www\.)?([a-zA-Z0-9.-]+)(?::(\d+))?(\/[^\s]*)?(?:\?([^#]*))?(?:#(.*))?/
 
   @doc """
   Merges given query params to a URL's existing query params.
@@ -65,5 +68,31 @@ defmodule ExUtils.URLs do
     url
     |> URI.decode()
     |> URI.encode()
+  end
+
+  @doc """
+  Extracts one or more valid HTTP/HTTPS URLs from a string.
+
+  ## Examples
+
+  ```elixir
+  iex> extract("something https://google.com other http://example.com/some/path?query=1#fragment test...")
+  ["https://google.com", "http://example.com/some/path?query=1#fragment"]
+
+  iex> extract("API: https://api.example.com:4000/v1 and website: https://www.example.com")
+  ["https://api.example.com:4000/v1", "https://www.example.com"]
+
+  iex> extract("")
+  []
+
+  iex> extract("example.com and ftp://example.com")
+  []
+  ```
+  """
+  @spec extract(String.t()) :: [t()]
+  def extract(string) when is_binary(string) do
+    @url_regex
+    |> Regex.scan(string, capture: :first)
+    |> List.flatten()
   end
 end
