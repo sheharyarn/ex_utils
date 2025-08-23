@@ -9,6 +9,30 @@ defmodule ExUtils.URLs do
   @url_regex ~r/(https?):\/\/(?:www\.)?([a-zA-Z0-9.-]+)(?::(\d+))?(\/[^\s]*)?(?:\?([^#]*))?(?:#(.*))?/
 
   @doc """
+  Checks if a string is a valid HTTP/HTTPS URL or not.
+
+  ## Examples
+
+  ```elixir
+  iex> valid?("https://example.com/path?view=details#results")
+  true
+
+  iex> valid?("http://localhost:4000")
+  true
+
+  iex> valid?("google.com")
+  false
+
+  iex> valid?("Visit https://example.com")
+  false
+  ```
+  """
+  @spec valid?(t()) :: boolean()
+  def valid?(url) when is_binary(url) do
+    match?([^url], extract(url))
+  end
+
+  @doc """
   Merges given query params to a URL's existing query params.
 
   ## Examples

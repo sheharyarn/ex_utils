@@ -4,6 +4,35 @@ defmodule ExUtils.Tests.URLs do
 
   doctest ExUtils.URLs
 
+  describe "valid?/1" do
+    test "returns true for HTTP and HTTPS URLs" do
+      assert valid?("http://example.com")
+      assert valid?("https://www.example.com")
+    end
+
+    test "returns true for ports, paths, queries, and fragments" do
+      assert valid?("http://localhost:4000/path")
+      assert valid?("https://example.com/path?view=details#results")
+    end
+
+    test "returns false for unsupported or missing schemes" do
+      refute valid?("example.com")
+      refute valid?("ftp://example.com")
+      refute valid?("file://example.com/path")
+    end
+
+    test "returns false when the URL is only part of the string" do
+      refute valid?("Visit https://example.com")
+      refute valid?("https://example.com is the website")
+    end
+
+    test "returns false for empty or malformed strings" do
+      refute valid?("")
+      refute valid?("https://")
+      refute valid?("some gibberish")
+    end
+  end
+
   describe "merge_query/2" do
     test "returns the URL unchanged when both queries are empty" do
       assert merge_query("example.com", []) == "example.com"
