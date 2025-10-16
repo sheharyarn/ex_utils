@@ -19,17 +19,17 @@ if ExUtils.Modules.exists?(Ecto) do
     ## Examples
 
     ```elixir
-    iex> changeset = Ecto.Changeset.change({%{name: nil}, %{name: :string}})
+    iex> changeset = Ecto.Changeset.change(%User{name: nil})
     iex> changeset = put_new_change(changeset, :name, "Ali")
     iex> changeset.changes
     %{name: "Ali"}
 
-    iex> changeset = Ecto.Changeset.change({%{name: nil}, %{name: :string}})
+    iex> changeset = Ecto.Changeset.change(%User{name: nil})
     iex> changeset = put_new_change(changeset, :name, fn -> "Shey" end)
     iex> changeset.changes
     %{name: "Shey"}
 
-    iex> changeset = Ecto.Changeset.change({%{name: "Ali"}, %{name: :string}})
+    iex> changeset = Ecto.Changeset.change(%User{name: "Ali"})
     iex> changeset = put_new_change(changeset, :name, "Shey")
     iex> changeset.changes
     %{}
@@ -59,6 +59,20 @@ if ExUtils.Modules.exists?(Ecto) do
     and [schemaless changesets](https://hexdocs.pm/ecto/Ecto.Changeset.html#module-schemaless-changesets).
 
     Also see `embedded_schema?/1`.
+
+    ## Examples
+
+    ```elixir
+    # When `User` schema maps to the "users" table
+    iex> changeset = Ecto.Changeset.change(%User{})
+    iex> has_source?(changeset)
+    true
+
+    # When `Profile` is defined using `embedded_schema`
+    iex> changeset = Ecto.Changeset.change(%Profile{})
+    iex> has_source?(changeset)
+    false
+    ```
     """
     @spec has_source?(Changeset.t()) :: boolean()
     def has_source?(%Changeset{data: %{__meta__: %{source: source}}}) when not is_nil(source), do: true
@@ -70,6 +84,20 @@ if ExUtils.Modules.exists?(Ecto) do
 
     Returns `false` for source-backed schemas and [schemaless changesets](https://hexdocs.pm/ecto/Ecto.Changeset.html#module-schemaless-changesets).
     Also see `has_source?/1`.
+
+    ## Examples
+
+    ```elixir
+    # When `Profile` is defined using `embedded_schema`
+    iex> changeset = Ecto.Changeset.change(%Profile{})
+    iex> embedded_schema?(changeset)
+    true
+
+    # When `User` schema maps to the "users" table
+    iex> changeset = Ecto.Changeset.change(%User{})
+    iex> embedded_schema?(changeset)
+    false
+    ```
     """
     @spec embedded_schema?(Changeset.t()) :: boolean()
     def embedded_schema?(%Changeset{data: %module{}} = changeset) do
