@@ -37,18 +37,14 @@ if ExUtils.Modules.exists?(Ecto) do
     """
     @spec put_new_change(Changeset.t(), atom(), any()) :: Changeset.t()
     def put_new_change(%Changeset{} = changeset, field, value) when is_atom(field) do
-      value =
-        if is_function(value, 0) do
-          value.()
-        else
-          value
-        end
-
       case get_field(changeset, field) do
-        nil -> put_change(changeset, field, value)
+        nil -> put_change(changeset, field, evaluate_value(value))
         _other -> changeset
       end
     end
+
+    defp evaluate_value(fun) when is_function(fun, 0), do: fun.()
+    defp evaluate_value(val), do: val
 
     @doc """
     Prevents changing a field once set.
