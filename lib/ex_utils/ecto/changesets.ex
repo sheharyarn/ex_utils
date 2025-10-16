@@ -8,6 +8,7 @@ if ExUtils.Modules.exists?(Ecto) do
     """
 
     alias Ecto.Changeset
+    alias ExUtils.Modules
     import Ecto.Changeset
 
     @doc """
@@ -48,5 +49,33 @@ if ExUtils.Modules.exists?(Ecto) do
         _other -> changeset
       end
     end
+
+    @doc """
+    Checks if the changeset data has an Ecto source.
+
+    This returns `true` for changesets of source-backed schemas (that map
+    to a real data source such as a database table), and returns `false`
+    for [Embedded Schemas](https://hexdocs.pm/ecto/embedded-schemas.html)
+    and [schemaless changesets](https://hexdocs.pm/ecto/Ecto.Changeset.html#module-schemaless-changesets).
+
+    Also see `embedded_schema?/1`.
+    """
+    @spec has_source?(Changeset.t()) :: boolean()
+    def has_source?(%Changeset{data: %{__meta__: %{source: source}}}) when not is_nil(source), do: true
+    def has_source?(%Changeset{}), do: false
+
+    @doc """
+    Checks if the given changeset is for an Ecto
+    [embedded schema](https://hexdocs.pm/ecto/embedded-schemas.html).
+
+    Returns `false` for source-backed schemas and [schemaless changesets](https://hexdocs.pm/ecto/Ecto.Changeset.html#module-schemaless-changesets).
+    Also see `has_source?/1`.
+    """
+    @spec embedded_schema?(Changeset.t()) :: boolean()
+    def embedded_schema?(%Changeset{data: %module{}} = changeset) do
+      !has_source?(changeset) and Modules.has_function?(module, {:__schema__, 1})
+    end
+
+    def embedded_schema?(%Changeset{}), do: false
   end
 end

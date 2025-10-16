@@ -4,6 +4,22 @@ defmodule ExUtils.Tests.Ecto.Changesets do
 
   doctest ExUtils.Ecto.Changesets
 
+  defmodule EmbeddedProfile do
+    use Ecto.Schema
+
+    embedded_schema do
+      field :name, :string
+    end
+  end
+
+  defmodule SourceProfile do
+    use Ecto.Schema
+
+    schema "profiles" do
+      field :name, :string
+    end
+  end
+
   describe "put_new_change/3" do
     test "puts a value when the field is nil" do
       changeset = build(%{name: nil})
@@ -31,6 +47,42 @@ defmodule ExUtils.Tests.Ecto.Changesets do
 
       assert changeset = put_new_change(changeset, :name, "Grace")
       assert changeset.changes == %{name: "Ada"}
+    end
+  end
+
+  describe "has_source?/1" do
+    test "returns true for a source-backed schema" do
+      changeset = Ecto.Changeset.change(%SourceProfile{name: "Ada"})
+
+      assert has_source?(changeset)
+    end
+
+    test "returns false for an embedded schema" do
+      changeset = Ecto.Changeset.change(%EmbeddedProfile{name: "Ada"})
+
+      refute has_source?(changeset)
+    end
+
+    test "returns false for a schemaless changeset" do
+      refute has_source?(build(%{name: "Ada"}))
+    end
+  end
+
+  describe "embedded_schema?/1" do
+    test "returns false for a source-backed schema" do
+      changeset = Ecto.Changeset.change(%SourceProfile{name: "Ada"})
+
+      refute embedded_schema?(changeset)
+    end
+
+    test "returns true for an embedded schema" do
+      changeset = Ecto.Changeset.change(%EmbeddedProfile{name: "Ada"})
+
+      assert embedded_schema?(changeset)
+    end
+
+    test "returns false for a schemaless changeset" do
+      refute embedded_schema?(build(%{name: "Ada"}))
     end
   end
 
