@@ -51,6 +51,48 @@ defmodule ExUtils.Tests.Ecto.Changesets do
     end
   end
 
+  describe "prevent_change/3" do
+    test "adds an error when changing an existing value" do
+      changeset = Ecto.Changeset.change(%User{name: "Ada"}, %{name: "Grace"})
+      changeset = prevent_change(changeset, :name)
+
+      refute changeset.valid?
+      assert changeset.errors == [name: {"cannot modify", []}]
+    end
+
+    test "allows changing an ignored initial value" do
+      changeset = Ecto.Changeset.change(%User{name: nil}, %{name: "Ada"})
+      changeset = prevent_change(changeset, :name)
+
+      assert changeset.valid?
+      assert changeset.errors == []
+    end
+
+    test "accepts custom ignored initial values" do
+      changeset = Ecto.Changeset.change(%User{name: ""}, %{name: "Ada"})
+      changeset = prevent_change(changeset, :name, ignore: [nil, ""])
+
+      assert changeset.valid?
+      assert changeset.errors == []
+    end
+
+    test "uses a custom error message" do
+      changeset = Ecto.Changeset.change(%User{name: "Ada"}, %{name: "Grace"})
+      changeset = prevent_change(changeset, :name, message: "is permanent")
+
+      assert changeset.errors == [name: {"is permanent", []}]
+    end
+
+    test "allows an unchanged value" do
+      changeset = Ecto.Changeset.change(%User{name: "Ada"})
+      changeset = Ecto.Changeset.force_change(changeset, :name, "Ada")
+      changeset = prevent_change(changeset, :name)
+
+      assert changeset.valid?
+      assert changeset.errors == []
+    end
+  end
+
   describe "has_source?/1" do
     test "returns true for a source-backed schema" do
       changeset = Ecto.Changeset.change(%User{name: "Ada"})

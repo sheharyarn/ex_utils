@@ -51,6 +51,52 @@ if ExUtils.Modules.exists?(Ecto) do
     end
 
     @doc """
+    Prevents changing a field once set.
+
+    Adds an error when the changeset changes a field whose original value is
+    not ignored.
+
+    ## Options
+
+    - `:ignore` - Initial values that may be changed. Defaults to `[nil]`.
+    - `:message` - Error message used when a change is prevented. Defaults to
+      `"cannot modify"`.
+
+    ## Examples
+
+    ```elixir
+    # Specify which fields cannot be changed
+    def changeset(user, attrs) do
+      user
+      |> cast(attrs, [:name, :email])
+      |> prevent_change(:email)
+    end
+
+    iex> changeset = User.changeset(%User{email: "old@example.com"}, %{email: "new@example.com"})
+    iex> changeset.errors
+    [email: {"cannot modify", []}]
+
+    iex> changeset = User.changeset(%User{}, %{email: "new@example.com"})
+    iex> changeset.errors
+    []
+    ```
+    """
+    @spec prevent_change(Changeset.t(), atom(), Keyword.t()) :: Changeset.t()
+    def prevent_change(%Changeset{} = changeset, field, opts \\ []) when is_atom(field) do
+      error_message = Keyword.get(opts, :message, "cannot modify")
+      ignored_values = Keyword.get(opts, :ignore, [nil])
+      old_value = Map.get(changeset.data, field)
+
+      validate_change(changeset, field, fn ^field, new_value ->
+        cond do
+          new_value == old_value -> []
+          old_value in ignored_values -> []
+          true -> [{field, error_message}]
+        end
+      end)
+    end
+
+    @doc """
     Checks if the changeset data has an Ecto source.
 
     This returns `true` for changesets of source-backed schemas (that map
