@@ -93,6 +93,59 @@ if ExUtils.Modules.exists?(Ecto) do
     end
 
     @doc """
+    Returns the previous and new values for fields changed in an Ecto changeset.
+
+    Nested embeds are represented using dot-separated keys.
+
+    ## Examples
+
+    ```elixir
+    iex> changeset = User.changeset(%User{}, %{name: "Ada"})
+    iex> changes_diff(changeset)
+    {%{"name" => nil}, %{"name" => "Ada"}}
+
+    iex> user = %User{settings: %User.Settings{theme: "light"}}
+    iex> changeset = User.changeset(user, %{settings: %{theme: "dark"}})
+    iex> changes_diff(changeset)
+    {%{"settings.theme" => "light"}, %{"settings.theme" => "dark"}}
+    ```
+    """
+    @spec changes_diff(Changeset.t()) :: {map(), map()}
+    def changes_diff(%Changeset{} = changeset) do
+      {previous, changes} = build_diff(changeset, %{}, %{}, [])
+      {flatten_keys(previous), flatten_keys(changes)}
+    end
+
+    defp build_diff(changeset, previous_values, new_changes, parent_keys) do
+      Enum.reduce(changeset.changes, {previous_values, new_changes}, fn
+        {key, %Changeset{} = changeset}, {previous, changes} ->
+          build_diff(changeset, previous, changes, [key | parent_keys])
+
+        {key, [%Changeset{} | _] = changesets}, {previous, changes} ->
+          changesets
+          |> Enum.with_index()
+          |> Enum.reduce({previous, changes}, fn {changeset, index}, {previous, changes} ->
+            build_diff(changeset, previous, changes, [index, key | parent_keys])
+          end)
+
+        {key, new_value}, {previous, changes} ->
+          key_path = [key | parent_keys]
+          old_value = Map.fetch!(changeset.data, key)
+          previous = Map.put(previous, key_path, old_value)
+          changes = Map.put(changes, key_path, new_value)
+
+          {previous, changes}
+      end)
+    end
+
+    defp flatten_keys(map) do
+      Map.new(map, fn {key_path, value} ->
+        key = key_path |> Enum.reverse() |> Enum.map_join(".", &to_string/1)
+        {key, value}
+      end)
+    end
+
+    @doc """
     Checks if the changeset data has an Ecto source.
 
     This returns `true` for changesets of source-backed schemas (that map
