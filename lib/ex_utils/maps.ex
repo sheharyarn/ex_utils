@@ -63,6 +63,40 @@ defmodule ExUtils.Maps do
   defp do_from_struct(other, _opts), do: other
 
   @doc """
+  Flattens nested map and list keys into dot-separated string keys.
+  """
+  @spec flatten(map()) :: %{String.t() => any()}
+  def flatten(%{} = map) do
+    map
+    |> Enum.flat_map(fn {key, value} -> do_flatten(value, [key]) end)
+    |> Map.new(fn {key_path, value} ->
+      {Enum.map_join(key_path, ".", &to_string/1), value}
+    end)
+  end
+
+  defp do_flatten(%module{} = struct, key_path) when is_atom(module) do
+    [{key_path, struct}]
+  end
+
+  defp do_flatten(%{} = map, key_path) when map_size(map) == 0 do
+    [{key_path, map}]
+  end
+
+  defp do_flatten(%{} = map, key_path) do
+    Enum.flat_map(map, fn {key, value} -> do_flatten(value, key_path ++ [key]) end)
+  end
+
+  defp do_flatten([], key_path), do: [{key_path, []}]
+
+  defp do_flatten(list, key_path) when is_list(list) do
+    list
+    |> Enum.with_index()
+    |> Enum.flat_map(fn {value, index} -> do_flatten(value, key_path ++ [index]) end)
+  end
+
+  defp do_flatten(value, key_path), do: [{key_path, value}]
+
+  @doc """
   Atomize the given keys of a map.
 
   Passed keys must be a list of atoms or `:all`. Using a list of atoms is
