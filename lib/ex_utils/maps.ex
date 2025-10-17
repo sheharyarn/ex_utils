@@ -64,37 +64,44 @@ defmodule ExUtils.Maps do
 
   @doc """
   Flattens nested map and list keys into dot-separated string keys.
+
+  Structs and empty maps or lists are preserved as values.
+
+  ## Examples
+
+  ```elixir
+  iex> ExUtils.Maps.flatten(%{user: %{name: "Ada", settings: %{theme: "dark"}}})
+  %{"user.name" => "Ada", "user.settings.theme" => "dark"}
+
+  iex> ExUtils.Maps.flatten(%{profiles: [%{platform: "github", username: "ada"}]})
+  %{"profiles.0.platform" => "github", "profiles.0.username" => "ada"}
+  ```
   """
   @spec flatten(map()) :: %{String.t() => any()}
   def flatten(%{} = map) do
-    map
-    |> Enum.flat_map(fn {key, value} -> do_flatten(value, [key]) end)
+    []
+    |> do_flatten(map)
+    |> Enum.map(fn {key_path, value} -> {Enum.reverse(key_path), value} end)
     |> Map.new(fn {key_path, value} ->
       {Enum.map_join(key_path, ".", &to_string/1), value}
     end)
   end
 
-  defp do_flatten(%module{} = struct, key_path) when is_atom(module) do
-    [{key_path, struct}]
+  defp do_flatten(key_path, %module{} = struct) when is_atom(module), do: [{key_path, struct}]
+  defp do_flatten(key_path, %{} = map) when map_size(map) == 0, do: [{key_path, map}]
+  defp do_flatten(key_path, []), do: [{key_path, []}]
+
+  defp do_flatten(key_path, %{} = map) do
+    Enum.flat_map(map, fn {key, value} -> do_flatten([key | key_path], value) end)
   end
 
-  defp do_flatten(%{} = map, key_path) when map_size(map) == 0 do
-    [{key_path, map}]
-  end
-
-  defp do_flatten(%{} = map, key_path) do
-    Enum.flat_map(map, fn {key, value} -> do_flatten(value, key_path ++ [key]) end)
-  end
-
-  defp do_flatten([], key_path), do: [{key_path, []}]
-
-  defp do_flatten(list, key_path) when is_list(list) do
+  defp do_flatten(key_path, list) when is_list(list) do
     list
     |> Enum.with_index()
-    |> Enum.flat_map(fn {value, index} -> do_flatten(value, key_path ++ [index]) end)
+    |> Enum.flat_map(fn {value, index} -> do_flatten([index | key_path], value) end)
   end
 
-  defp do_flatten(value, key_path), do: [{key_path, value}]
+  defp do_flatten(key_path, value), do: [{key_path, value}]
 
   @doc """
   Atomize the given keys of a map.
