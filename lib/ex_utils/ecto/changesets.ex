@@ -95,53 +95,39 @@ if ExUtils.Modules.exists?(Ecto) do
     @doc """
     Returns the previous and new values for fields changed in an Ecto changeset.
 
-    Nested embeds are represented using dot-separated keys.
-
     ## Examples
 
     ```elixir
     iex> changeset = User.changeset(%User{}, %{name: "Ada"})
     iex> changes_diff(changeset)
-    {%{"name" => nil}, %{"name" => "Ada"}}
+    {%{name: nil}, %{name: "Ada"}}
 
-    iex> user = %User{settings: %User.Settings{theme: "light"}}
-    iex> changeset = User.changeset(user, %{settings: %{theme: "dark"}})
+    iex> user = %User{name: "Ada", settings: %User.Settings{theme: "light"}}
+    iex> changeset = User.changeset(user, %{name: "Nas", settings: %{theme: "dark"}})
     iex> changes_diff(changeset)
-    {%{"settings.theme" => "light"}, %{"settings.theme" => "dark"}}
+    {
+      %{name: "Ada", settings: %{theme: "light"}},
+      %{name: "Nas", settings: %{theme: "dark"}}
+    }
     ```
     """
     @spec changes_diff(Changeset.t()) :: {map(), map()}
     def changes_diff(%Changeset{} = changeset) do
-      {previous, changes} = build_diff(changeset, %{}, %{}, [])
-      {flatten_keys(previous), flatten_keys(changes)}
-    end
+      Enum.reduce(changeset.changes, {%{}, %{}}, fn
+        # Nested single changesets / embeds_one
+        {key, %Changeset{} = changeset}, {old, new} ->
+          {nested_old, nested_new} = changes_diff(changeset)
+          {Map.put(old, key, nested_old), Map.put(new, key, nested_new)}
 
-    defp build_diff(changeset, previous_values, new_changes, parent_keys) do
-      Enum.reduce(changeset.changes, {previous_values, new_changes}, fn
-        {key, %Changeset{} = changeset}, {previous, changes} ->
-          build_diff(changeset, previous, changes, [key | parent_keys])
+        # Nested changeset lists / embeds_many
+        # TODO: Implement this
+        {_key, [%Changeset{} | _]}, _diff ->
+          raise "embeds_many is unsupported"
 
-        {key, [%Changeset{} | _] = changesets}, {previous, changes} ->
-          changesets
-          |> Enum.with_index()
-          |> Enum.reduce({previous, changes}, fn {changeset, index}, {previous, changes} ->
-            build_diff(changeset, previous, changes, [index, key | parent_keys])
-          end)
-
-        {key, new_value}, {previous, changes} ->
-          key_path = [key | parent_keys]
+        # Scalar values
+        {key, new_value}, {old, new} ->
           old_value = Map.fetch!(changeset.data, key)
-          previous = Map.put(previous, key_path, old_value)
-          changes = Map.put(changes, key_path, new_value)
-
-          {previous, changes}
-      end)
-    end
-
-    defp flatten_keys(map) do
-      Map.new(map, fn {key_path, value} ->
-        key = key_path |> Enum.reverse() |> Enum.map_join(".", &to_string/1)
-        {key, value}
+          {Map.put(old, key, old_value), Map.put(new, key, new_value)}
       end)
     end
 

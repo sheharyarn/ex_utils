@@ -3,21 +3,39 @@ defmodule ExUtils.Tests.Ecto.Changesets do
   import ExUtils.Ecto.Changesets
 
   defmodule Profile do
+    @moduledoc false
     use Ecto.Schema
+    import Ecto.Changeset
 
     embedded_schema do
       field :platform, :string
       field :username, :string
     end
+
+    def changeset(profile, attrs), do: cast(profile, attrs, [:platform, :username])
   end
 
   defmodule User do
+    @moduledoc false
     use Ecto.Schema
+    import Ecto.Changeset
 
     schema "users" do
       field :name, :string
       field :email, :string
       embeds_many :profiles, Profile
+
+      embeds_one :settings, Settings, on_replace: :update do
+        field :theme, :string
+        field :alerts_enabled?, :boolean
+      end
+    end
+
+    def changeset(user, attrs) do
+      user
+      |> cast(attrs, [:name, :email])
+      |> cast_embed(:profiles, with: &Profile.changeset/2)
+      |> cast_embed(:settings, with: &cast(&1, &2, [:theme, :alerts_enabled?]))
     end
   end
 
@@ -90,6 +108,31 @@ defmodule ExUtils.Tests.Ecto.Changesets do
 
       assert changeset.valid?
       assert changeset.errors == []
+    end
+  end
+
+  describe "changes_diff/1" do
+    test "returns previous values and new changes" do
+      changeset = User.changeset(%User{name: "Ada"}, %{name: "Grace", email: "g@example.com"})
+
+      assert {previous, changes} = changes_diff(changeset)
+      assert previous == %{email: nil, name: "Ada"}
+      assert changes == %{email: "g@example.com", name: "Grace"}
+    end
+
+    test "returns previous values and new changes for an embeds_one field" do
+      user = %User{
+        settings: %User.Settings{theme: "light", alerts_enabled?: false}
+      }
+
+      attrs = %{settings: %{theme: "dark", alerts_enabled?: true}}
+      changeset = User.changeset(user, attrs)
+
+      assert {previous, changes} = changes_diff(changeset)
+
+      assert previous == %{settings: %{alerts_enabled?: false, theme: "light"}}
+
+      assert changes == %{settings: %{alerts_enabled?: true, theme: "dark"}}
     end
   end
 
