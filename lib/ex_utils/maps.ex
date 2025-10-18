@@ -63,9 +63,15 @@ defmodule ExUtils.Maps do
   defp do_from_struct(other, _opts), do: other
 
   @doc """
-  Flattens nested map and list keys into dot-separated string keys.
+  Flattens nested maps and lists into a map keyed by their access paths.
 
   Structs and empty maps or lists are preserved as values.
+
+  ## Options
+
+  - `:key_format` - Format used for flattened keys. Use `:string` for
+    dot-separated string or `:path` for lists containing the original path
+    segments. Defaults to `:string`.
 
   ## Examples
 
@@ -75,15 +81,30 @@ defmodule ExUtils.Maps do
 
   iex> ExUtils.Maps.flatten(%{profiles: [%{platform: "github", username: "ada"}]})
   %{"profiles.0.platform" => "github", "profiles.0.username" => "ada"}
+
+  iex> ExUtils.Maps.flatten(%{user: %{name: "Ada"}}, key_format: :path)
+  %{[:user, :name] => "Ada"}
   ```
   """
-  @spec flatten(map()) :: %{String.t() => any()}
-  def flatten(%{} = map) do
+  @spec flatten(map(), Keyword.t()) :: %{String.t() => any()} | %{[any()] => any()}
+  def flatten(%{} = map, opts \\ []) do
+    key_formatter =
+      opts
+      |> Keyword.get(:key_format, :string)
+      |> case do
+        :path -> & &1
+        :string -> fn kp -> Enum.map_join(kp, ".", &to_string/1) end
+      end
+
     []
     |> do_flatten(map)
-    |> Enum.map(fn {key_path, value} -> {Enum.reverse(key_path), value} end)
     |> Map.new(fn {key_path, value} ->
-      {Enum.map_join(key_path, ".", &to_string/1), value}
+      key =
+        key_path
+        |> Enum.reverse()
+        |> key_formatter.()
+
+      {key, value}
     end)
   end
 

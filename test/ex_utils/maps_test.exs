@@ -68,6 +68,45 @@ defmodule ExUtils.Tests.Maps do
     end
   end
 
+  describe "flatten/2" do
+    test "flattens nested map keys" do
+      map = %{user: %{name: "Ada", settings: %{theme: "dark"}}}
+
+      assert flatten(map) == %{
+               "user.name" => "Ada",
+               "user.settings.theme" => "dark"
+             }
+    end
+
+    test "flattens nested lists using indexes" do
+      map = %{profiles: [%{platform: "github"}, %{platform: "gitlab"}]}
+
+      assert flatten(map) == %{
+               "profiles.0.platform" => "github",
+               "profiles.1.platform" => "gitlab"
+             }
+    end
+
+    test "returns lists of path segments when key format is path" do
+      map = %{user: %{name: "Ada"}, profiles: [%{platform: "github"}]}
+
+      assert flatten(map, key_format: :path) == %{
+               [:user, :name] => "Ada",
+               [:profiles, 0, :platform] => "github"
+             }
+    end
+
+    test "preserves structs and empty collections" do
+      profile = %Profile{name: "Ada"}
+
+      assert flatten(%{profile: profile, settings: %{}, tags: []}) == %{
+               "profile" => profile,
+               "settings" => %{},
+               "tags" => []
+             }
+    end
+  end
+
   describe "atomize_keys/3" do
     test "atomizes selected keys at the first level", context do
       assert atomize_keys(context.map, [:a]) == %{
