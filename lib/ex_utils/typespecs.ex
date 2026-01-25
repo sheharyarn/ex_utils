@@ -3,12 +3,17 @@ defmodule ExUtils.Typespecs do
   Elixir utility methods for typespecs.
   """
 
+  @typedoc "Supported literals for dynamic typespec generation"
+  @type literal() :: atom() | integer()
+
   @doc """
   Builds a union type from a list of static values.
 
   This is useful for generating typespecs for enums when the values are already
   known at compile-time. To use it, you must call this inside a `@type`
   definition inside an `unquote(...)` expression.
+
+  Raises an error for invalid literals.
 
   ## Examples
 
@@ -21,8 +26,20 @@ defmodule ExUtils.Typespecs do
   @type status :: unquote(Typespecs.from_list(@statuses))
   @type priority :: unquote(Typespecs.from_list(@priorities)) | nil
   ```
+
+  The above is equivalent to writing these typespecs by hand:
+
+  ```elixir
+  @type status :: :open | :closed
+  @type priority :: 1 | 2 | 3 | nil
+  ```
+
   """
-  @spec from_list([atom() | integer()]) :: Macro.t()
+  @spec from_list([literal()]) :: Macro.t()
+  def from_list([]) do
+    raise(ArgumentError, "cannot build a typespec from an empty list")
+  end
+
   def from_list(values) when is_list(values) do
     values
     |> Enum.map(&to_literal/1)
