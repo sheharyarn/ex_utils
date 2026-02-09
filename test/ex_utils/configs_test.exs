@@ -56,6 +56,12 @@ defmodule ExUtils.Tests.Configs do
 
       assert from_priv!("test.txt") == expected_path
     end
+
+    test "rejects paths outside the priv directory" do
+      assert_raise RuntimeError, ~r/invalid path/, fn ->
+        from_priv!("../outside.txt")
+      end
+    end
   end
 
   describe "read_from_priv!/1" do

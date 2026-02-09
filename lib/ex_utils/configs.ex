@@ -102,8 +102,12 @@ defmodule ExUtils.Configs do
   """
   @spec from_priv!(binary()) :: binary()
   def from_priv!(path) do
-    priv_dir = :code.priv_dir(otp_app())
-    Path.join(priv_dir, path)
+    priv_dir = otp_app() |> :code.priv_dir() |> to_string()
+
+    case Path.safe_relative(path) do
+      {:ok, path} -> Path.join(priv_dir, path)
+      _error -> raise("invalid path #{path}")
+    end
   end
 
   @doc """
