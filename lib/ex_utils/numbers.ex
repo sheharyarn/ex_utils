@@ -75,17 +75,7 @@ if ExUtils.Modules.exists?(Decimal) do
     def to_decimal(%Decimal{} = value), do: value
     def to_decimal(value) when is_integer(value), do: Decimal.new(value)
     def to_decimal(value) when is_float(value), do: Decimal.from_float(value)
-
-    def to_decimal(value) when is_binary(value) do
-      value
-      |> String.trim()
-      |> Decimal.parse()
-      |> case do
-        {num, ""} -> num
-        _ -> nil
-      end
-    end
-
+    def to_decimal(value) when is_binary(value), do: from_string(value, &Decimal.parse/1)
     def to_decimal(_), do: nil
 
     @doc """
@@ -110,17 +100,7 @@ if ExUtils.Modules.exists?(Decimal) do
     def to_float(%Decimal{} = value), do: Decimal.to_float(value)
     def to_float(value) when is_integer(value), do: value * 1.0
     def to_float(value) when is_float(value), do: value
-
-    def to_float(value) when is_binary(value) do
-      value
-      |> String.trim()
-      |> Float.parse()
-      |> case do
-        {num, ""} -> num
-        _ -> nil
-      end
-    end
-
+    def to_float(value) when is_binary(value), do: from_string(value, &Float.parse/1)
     def to_float(_), do: nil
 
     @doc """
@@ -149,17 +129,7 @@ if ExUtils.Modules.exists?(Decimal) do
     def to_integer(%Decimal{} = value), do: value |> Decimal.round() |> Decimal.to_integer()
     def to_integer(value) when is_integer(value), do: value
     def to_integer(value) when is_float(value), do: Kernel.round(value)
-
-    def to_integer(value) when is_binary(value) do
-      value
-      |> String.trim()
-      |> Integer.parse()
-      |> case do
-        {num, ""} -> num
-        _ -> nil
-      end
-    end
-
+    def to_integer(value) when is_binary(value), do: from_string(value, &Integer.parse/1)
     def to_integer(_), do: nil
 
     @doc """
@@ -179,11 +149,20 @@ if ExUtils.Modules.exists?(Decimal) do
     ```
     """
     @spec trunc(t()) :: integer()
+    def trunc(%Decimal{} = n), do: n |> Decimal.round(0, :down) |> Decimal.to_integer()
     def trunc(n) when is_integer(n), do: n
     def trunc(n) when is_float(n), do: Kernel.trunc(n)
 
-    def trunc(n) when is_struct(n, Decimal) do
-      n |> Decimal.round(0, :down) |> Decimal.to_integer()
+    # Parse helpers
+
+    defp from_string(string, parser) do
+      string
+      |> String.trim()
+      |> parser.()
+      |> case do
+        {number, ""} -> number
+        _other -> nil
+      end
     end
   end
 end
