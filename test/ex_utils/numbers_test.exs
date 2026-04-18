@@ -96,4 +96,14 @@ defmodule ExUtils.Tests.Numbers do
       assert to_integer("12px") == nil
     end
   end
+
+  describe "trunc/1" do
+    test "truncates numeric values toward zero" do
+      assert trunc(Decimal.new("5.7")) == 5
+      assert trunc(Decimal.new("-5.7")) == -5
+      assert trunc(5.7) == 5
+      assert trunc(-5.7) == -5
+      assert trunc(5) == 5
+    end
+  end
 end

@@ -161,5 +161,29 @@ if ExUtils.Modules.exists?(Decimal) do
     end
 
     def to_integer(_), do: nil
+
+    @doc """
+    Truncates a numeric value and returns an integer.
+
+    ## Examples
+
+    ```elixir
+    iex> ExUtils.Numbers.trunc(Decimal.new("5.7"))
+    5
+
+    iex> ExUtils.Numbers.trunc(-5.7)
+    -5
+
+    iex> ExUtils.Numbers.trunc(5)
+    5
+    ```
+    """
+    @spec trunc(t()) :: integer()
+    def trunc(n) when is_integer(n), do: n
+    def trunc(n) when is_float(n), do: Kernel.trunc(n)
+
+    def trunc(n) when is_struct(n, Decimal) do
+      n |> Decimal.round(0, :down) |> Decimal.to_integer()
+    end
   end
 end
