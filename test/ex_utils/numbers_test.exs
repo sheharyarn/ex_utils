@@ -55,6 +55,21 @@ defmodule ExUtils.Tests.Numbers do
     end
   end
 
+  describe "to_decimal!/1" do
+    test "returns a decimal for valid values" do
+      assert to_decimal!("12.5") == Decimal.new("12.5")
+      assert to_decimal!(12) == Decimal.new("12")
+    end
+
+    test "raises for invalid values" do
+      assert_raise ArgumentError, ~s(unable to parse "invalid"), fn ->
+        to_decimal!("invalid")
+      end
+
+      assert_raise ArgumentError, "unable to parse nil", fn -> to_decimal!(nil) end
+    end
+  end
+
   describe "to_float/1" do
     test "converts numeric values" do
       assert to_float(Decimal.new("12.5")) == 12.5
@@ -72,6 +87,21 @@ defmodule ExUtils.Tests.Numbers do
       assert to_float(:invalid) == nil
       assert to_float("") == nil
       assert to_float("12.5px") == nil
+    end
+  end
+
+  describe "to_float!/1" do
+    test "returns a float for valid values" do
+      assert to_float!("12.5") == 12.5
+      assert to_float!(Decimal.new("12.5")) == 12.5
+    end
+
+    test "raises for invalid values" do
+      assert_raise ArgumentError, ~s(unable to parse "invalid"), fn ->
+        to_float!("invalid")
+      end
+
+      assert_raise ArgumentError, "unable to parse nil", fn -> to_float!(nil) end
     end
   end
 
@@ -94,6 +124,21 @@ defmodule ExUtils.Tests.Numbers do
       assert to_integer("") == nil
       assert to_integer("12.5") == nil
       assert to_integer("12px") == nil
+    end
+  end
+
+  describe "to_integer!/1" do
+    test "returns an integer for valid values" do
+      assert to_integer!("12") == 12
+      assert to_integer!(Decimal.new("12.5")) == 13
+    end
+
+    test "raises for invalid values" do
+      assert_raise ArgumentError, ~s(unable to parse "12.5"), fn ->
+        to_integer!("12.5")
+      end
+
+      assert_raise ArgumentError, "unable to parse nil", fn -> to_integer!(nil) end
     end
   end
 

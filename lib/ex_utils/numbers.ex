@@ -58,6 +58,8 @@ if ExUtils.Modules.exists?(Decimal) do
 
     If the input is nil or invalid string, returns nil.
 
+    Also see `to_decimal!/1`.
+
     ## Examples
 
     ```elixir
@@ -79,9 +81,29 @@ if ExUtils.Modules.exists?(Decimal) do
     def to_decimal(_), do: nil
 
     @doc """
+    Same as `to_decimal/1` but raises when unable to parse.
+
+    ## Examples
+
+    ```elixir
+    iex> ExUtils.Numbers.to_decimal!("12.5")
+    Decimal.new("12.5")
+
+    iex> ExUtils.Numbers.to_decimal!("invalid")
+    ** (ArgumentError) unable to parse "invalid"
+    ```
+    """
+    @spec to_decimal!(parseable()) :: Decimal.t()
+    def to_decimal!(value) do
+      value |> to_decimal() |> verify_parse!(value)
+    end
+
+    @doc """
     Parse a string or another numeric type to a float.
 
     If the input is nil or invalid string, returns nil.
+
+    Also see `to_float!/1`.
 
     ## Examples
 
@@ -104,10 +126,30 @@ if ExUtils.Modules.exists?(Decimal) do
     def to_float(_), do: nil
 
     @doc """
+    Same as `to_float/1` but raises when unable to parse.
+
+    ## Examples
+
+    ```elixir
+    iex> ExUtils.Numbers.to_float!("12.5")
+    12.5
+
+    iex> ExUtils.Numbers.to_float!("invalid")
+    ** (ArgumentError) unable to parse "invalid"
+    ```
+    """
+    @spec to_float!(parseable()) :: float()
+    def to_float!(value) do
+      value |> to_float() |> verify_parse!(value)
+    end
+
+    @doc """
     Parse a string or another numeric type to an integer.
 
     If the input is a decimal or float, it rounds it.
     If the input is nil or invalid string, returns nil.
+
+    Also see `to_integer!/1`.
 
     ## Examples
 
@@ -131,6 +173,24 @@ if ExUtils.Modules.exists?(Decimal) do
     def to_integer(value) when is_float(value), do: Kernel.round(value)
     def to_integer(value) when is_binary(value), do: from_string(value, &Integer.parse/1)
     def to_integer(_), do: nil
+
+    @doc """
+    Same as `to_integer/1` but raises when unable to parse.
+
+    ## Examples
+
+    ```elixir
+    iex> ExUtils.Numbers.to_integer!("12")
+    12
+
+    iex> ExUtils.Numbers.to_integer!("12.5")
+    ** (ArgumentError) unable to parse "12.5"
+    ```
+    """
+    @spec to_integer!(parseable()) :: integer()
+    def to_integer!(value) do
+      value |> to_integer() |> verify_parse!(value)
+    end
 
     @doc """
     Truncates a numeric value and returns an integer.
@@ -164,5 +224,8 @@ if ExUtils.Modules.exists?(Decimal) do
         _other -> nil
       end
     end
+
+    defp verify_parse!(nil, value), do: raise(ArgumentError, "unable to parse #{inspect(value)}")
+    defp verify_parse!(result, _value), do: result
   end
 end
