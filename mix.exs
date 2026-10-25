@@ -11,7 +11,7 @@ defmodule ExUtils.MixProject do
       # Project
       app: @app,
       version: @version,
-      elixir: "~> 1.14.1",
+      elixir: "~> 1.14",
       description: description(),
       package: package(),
       aliases: aliases(),
