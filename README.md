@@ -17,7 +17,7 @@ to HexDocs][docs] for the full list of modules, functions and macros.
 
 ```elixir
 def deps do
-  [{:ex_utils, "~> 0.1.7"}]
+  [{:ex_utils, "~> 1.0"}]
 end
 ```
 
