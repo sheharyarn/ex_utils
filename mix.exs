@@ -24,7 +24,12 @@ defmodule ExUtils.MixProject do
       docs: [
         main: @name,
         canonical: "https://hexdocs.pm/#{@app}",
-        extras: ["README.md"]
+        extras: ["README.md"],
+        groups_for_modules: [
+          "ExUtils": ~r/^ExUtils\.(?!(?:Ecto|Modules)(?:\.|$)).+/,
+          "ExUtils.Modules": ~r/^ExUtils\.Modules(?:\.|$)/,
+          "ExUtils.Ecto": ~r/^ExUtils\.Ecto(?:\.|$)/
+        ]
       ]
     ]
   end

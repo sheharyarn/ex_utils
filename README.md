@@ -1,5 +1,5 @@
-ExUtils :zap:
-=============
+ExUtils ⚡
+=========
 
 [![Coverage Status][shield-inch]][inch-ci]
 [![Downloads][shield-downloads]][hexpm]
