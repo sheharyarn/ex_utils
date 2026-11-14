@@ -1,11 +1,12 @@
-ExUtils
-=======
+ExUtils :zap:
+=============
 
 [![Coverage Status][shield-inch]][inch-ci]
+[![Downloads][shield-downloads]][hexpm]
 [![Version][shield-version]][hexpm]
 [![License][shield-license]][hexpm]
 
-> :zap: Elixir utilities, helpers and shortcuts :zap:
+> Elixir utilities, helpers and shortcuts
 
 ExUtils provides helper methods and utilities for a lot of different data
 types in Elixir that are not present in the Kernel yet. [Head over
@@ -84,6 +85,7 @@ This package is available as open source under the terms of the [MIT License][li
 
   [inch-ci]:          https://inch-ci.org/github/sheharyarn/ex_utils
 
+  [shield-downloads]: https://img.shields.io/hexpm/dt/ex_utils.svg
   [shield-version]:   https://img.shields.io/hexpm/v/ex_utils.svg
   [shield-license]:   https://img.shields.io/hexpm/l/ex_utils.svg
   [shield-inch]:      https://inch-ci.org/github/sheharyarn/ex_utils.svg?branch=master
