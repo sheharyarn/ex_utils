@@ -55,7 +55,7 @@ defmodule ExUtils.Runner do
   {:ok, #PID<0.100.3>}
   ```
   """
-  @spec background([background_opt()], (() -> any())) :: {:ok, nil | pid()} | {:error, term()}
+  @spec background([background_opt()], (-> any())) :: {:ok, nil | pid()} | {:error, term()}
   def background(opts \\ [], fun) when is_function(fun, 0) do
     delay = Keyword.get(opts, :delay)
 
