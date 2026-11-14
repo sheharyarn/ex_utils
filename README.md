@@ -39,19 +39,49 @@ Replace `:your_app` with your application's OTP app name.
 
 
 
-## Methods
+## Modules
 
-It's not possible to list all functions here, but you should check out the
-[Documentation][docs]. `ExUtils` has been divided into sub-modules, each
-with their own utility methods:
+ExUtils is organized in independent modules, each providing helpers for
+a single domain or subject type, following a pluralized naming strategy
+wherever possible. This is done so to avoid potential aliasing conflicts
+with Elixir standard library modules, which use singular names. E.g. It
+exports a `ExUtils.Maps` module with helpers that extend Elixir's built-in
+`Map` module.
 
- - [`ExUtils.Terms`][docs-terms] - Core Module with generic methods that fit everything
- - [`ExUtils.Maps`][docs-maps]
- - [`ExUtils.Modules`][docs-modules]
- - [`ExUtils.Keywords`][docs-keywords]
- - [`ExUtils.Files`][docs-files]
- - [`ExUtils.Random`][docs-random]
- - [`ExUtils.Typespecs`][docs-typespecs]
+A high level overview of each module is provided below. You can also view
+all docs at on [HexDocs][docs] for the complete API.
+
+### Core Utils
+
+| Module |
+| --- |
+| [`ExUtils.Configs`][docs-configs] |
+| [`ExUtils.Files`][docs-files] |
+| [`ExUtils.Keywords`][docs-keywords] |
+| [`ExUtils.Lists`][docs-lists] |
+| [`ExUtils.Maps`][docs-maps] |
+| [`ExUtils.Numbers`][docs-numbers] |
+| [`ExUtils.Random`][docs-random] |
+| [`ExUtils.Runner`][docs-runner] |
+| [`ExUtils.Terms`][docs-terms] |
+| [`ExUtils.Typespecs`][docs-typespecs] |
+| [`ExUtils.URLs`][docs-urls] |
+
+### Module Utils
+
+| Module |
+| --- |
+| [`ExUtils.Modules`][docs-modules] |
+| [`ExUtils.Modules.Extend`][docs-modules-extend] |
+
+### Ecto Utils
+
+These modules are available when the optional `ecto` dependency is installed.
+
+| Module |
+| --- |
+| [`ExUtils.Ecto.Changesets`][docs-ecto-changesets] |
+| [`ExUtils.Ecto.Fragments`][docs-ecto-fragments] |
 
 
 
@@ -60,7 +90,7 @@ with their own utility methods:
  - [Fork][github-fork], Enhance, Send PR
  - Lock issues with any bugs or feature requests
  - Implement something from Roadmap
- - Spread the word
+ - Spread the word ❤️
 
 
 
@@ -75,13 +105,21 @@ This package is available as open source under the terms of the [MIT License][li
 
   [hexpm]:            https://hex.pm/packages/ex_utils
   [docs]:             https://hexdocs.pm/ex_utils/ExUtils.html
-  [docs-terms]:       https://hexdocs.pm/ex_utils/ExUtils.Terms.html
+  [docs-configs]:     https://hexdocs.pm/ex_utils/ExUtils.Configs.html
+  [docs-ecto-changesets]: https://hexdocs.pm/ex_utils/ExUtils.Ecto.Changesets.html
+  [docs-ecto-fragments]: https://hexdocs.pm/ex_utils/ExUtils.Ecto.Fragments.html
+  [docs-files]:       https://hexdocs.pm/ex_utils/ExUtils.Files.html
+  [docs-keywords]:    https://hexdocs.pm/ex_utils/ExUtils.Keywords.html
+  [docs-lists]:       https://hexdocs.pm/ex_utils/ExUtils.Lists.html
   [docs-maps]:        https://hexdocs.pm/ex_utils/ExUtils.Maps.html
   [docs-modules]:     https://hexdocs.pm/ex_utils/ExUtils.Modules.html
-  [docs-keywords]:    https://hexdocs.pm/ex_utils/ExUtils.Keywords.html
-  [docs-files]:       https://hexdocs.pm/ex_utils/ExUtils.Files.html
+  [docs-modules-extend]: https://hexdocs.pm/ex_utils/ExUtils.Modules.Extend.html
+  [docs-numbers]:     https://hexdocs.pm/ex_utils/ExUtils.Numbers.html
   [docs-random]:      https://hexdocs.pm/ex_utils/ExUtils.Random.html
+  [docs-runner]:      https://hexdocs.pm/ex_utils/ExUtils.Runner.html
+  [docs-terms]:       https://hexdocs.pm/ex_utils/ExUtils.Terms.html
   [docs-typespecs]:   https://hexdocs.pm/ex_utils/ExUtils.Typespecs.html
+  [docs-urls]:        https://hexdocs.pm/ex_utils/ExUtils.URLs.html
 
   [inch-ci]:          https://inch-ci.org/github/sheharyarn/ex_utils
 
