@@ -3,7 +3,7 @@ defmodule ExUtils.MixProject do
 
   @app :ex_utils
   @name "ExUtils"
-  @version "1.0.0"
+  @version "1.0.1"
   @github "https://github.com/sheharyarn/#{@app}"
 
   def project do
