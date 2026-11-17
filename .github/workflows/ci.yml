@@ -43,7 +43,8 @@ jobs:
         run: mix quality
 
   tests:
-    runs-on: ubuntu-latest
+    # Pinned: Hex has no OTP 25.0 build for ubuntu-26.04 (ubuntu-latest)
+    runs-on: ubuntu-24.04
 
     strategy:
       fail-fast: false
