@@ -8,6 +8,9 @@ All changes to this project are documented in this file.
 ### Added
 
 - Added Dialyzer to `mix quality` and CI, with the Dialyzer PLT cached in CI.
+- Added `mix hex.audit` and `mix deps.unlock --check-unused` to
+  `mix quality`, to catch retired or vulnerable dependencies and stale
+  `mix.lock` entries.
 
 ### Fixed
 

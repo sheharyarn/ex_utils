@@ -78,6 +78,8 @@ defmodule ExUtils.MixProject do
       sobelow: ["sobelow --strict --skip --exit --no-router"],
       quality: [
         "format --check-formatted",
+        "deps.unlock --check-unused",
+        "hex.audit",
         "sobelow",
         "dialyzer"
       ]
