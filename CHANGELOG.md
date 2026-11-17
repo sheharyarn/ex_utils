@@ -3,6 +3,17 @@ Changelog
 
 All changes to this project are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Added Dialyzer to `mix quality` and CI, with the Dialyzer PLT cached in CI.
+
+### Fixed
+
+- Fixed the typespec of `ExUtils.Keywords.to_map/1`, which referenced the
+  nonexistent `Map.t/0` type.
+
 ## [v1.0.0] - 2026-11-03
 
 ### Breaking changes

@@ -13,7 +13,7 @@ defmodule ExUtils.Keywords do
   %{a: 1, b: 2, c: 3}
   ```
   """
-  @spec to_map(keyword :: Keyword.t()) :: Map.t()
+  @spec to_map(keyword :: Keyword.t()) :: map()
   def to_map(keyword) do
     Enum.into(keyword, %{})
   end

@@ -27,6 +27,18 @@ jobs:
       - name: Install dependencies
         run: mix deps.get
 
+      # Dialyzer's PLT takes minutes to build, so it is cached per
+      # OTP/Elixir version and rebuilt only when dependencies change
+      - name: Restore Dialyzer PLT cache
+        uses: actions/cache@v5
+        with:
+          path: priv/plts
+          key: ${{ runner.os }}-plt-otp29.0-elixir1.20-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-plt-otp29.0-elixir1.20-
+
+      - name: Build Dialyzer PLT
+        run: mix dialyzer --plt
+
       - name: Check code quality
         run: mix quality
 
