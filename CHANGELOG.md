@@ -18,6 +18,8 @@ All changes to this project are documented in this file.
   nonexistent `Map.t/0` type.
 - Fixed `ExUtils.Random.integer/2` never returning `min`. Both bounds are now
   included, and `min` may equal `max`.
+- Fixed `ExUtils.URLs.normalize_encoding/1` decoding encoded delimiters such
+  as `%26`, `%2F`, `%23`, and `%2B`, which changed what the URL meant.
 
 ## [v1.0.0] - 2026-11-03
 

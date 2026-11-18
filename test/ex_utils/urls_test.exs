@@ -84,17 +84,29 @@ defmodule ExUtils.Tests.URLs do
                "https://example.com/some%20path"
     end
 
-    test "turns an encoded slash into a path separator" do
-      assert normalize_encoding("/files/folder%2Freport.pdf") == "/files/folder/report.pdf"
+    test "keeps an encoded slash inside a path segment" do
+      assert normalize_encoding("/files/folder%2Freport.pdf") == "/files/folder%2Freport.pdf"
     end
 
-    test "turns encoded query delimiters into URL syntax" do
+    test "keeps encoded query delimiters inside a query value" do
       assert normalize_encoding("/redirect?next=%2Faccount%3Ftab%3Dsettings") ==
-               "/redirect?next=/account?tab=settings"
+               "/redirect?next=%2Faccount%3Ftab%3Dsettings"
     end
 
-    test "turns an encoded hash into a fragment marker" do
-      assert normalize_encoding("/search?q=section%23details") == "/search?q=section#details"
+    test "keeps an encoded hash instead of starting a fragment" do
+      assert normalize_encoding("/search?q=section%23details") == "/search?q=section%23details"
+    end
+
+    test "keeps an encoded ampersand inside a query value" do
+      assert normalize_encoding("/search?q=a%26b&page=2") == "/search?q=a%26b&page=2"
+    end
+
+    test "keeps an encoded plus so it is not read as a space" do
+      assert normalize_encoding("/search?q=c%2B%2B") == "/search?q=c%2B%2B"
+    end
+
+    test "encodes a stray percent sign" do
+      assert normalize_encoding("/sale?q=50% off") == "/sale?q=50%25%20off"
     end
   end
 

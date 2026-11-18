@@ -6,6 +6,7 @@ defmodule ExUtils.URLs do
   @typedoc "A valid URI string"
   @type t :: String.t()
 
+  @percent_escape ~r/%[0-9A-Fa-f]{2}/
   @url_regex ~r/(https?):\/\/(?:www\.)?([a-zA-Z0-9.-]+)(?::(\d+))?(\/[^\s]*)?(?:\?([^#]*))?(?:#(.*))?/
 
   @doc """
@@ -69,7 +70,9 @@ defmodule ExUtils.URLs do
   @doc """
   Normalizes a URL's percent encoding.
 
-  Already encoded characters are not double-encoded.
+  Already encoded characters are not double-encoded. Encoded URL delimiters
+  such as `%26` (`&`), `%2F` (`/`), `%23` (`#`), and `%2B` (`+`) are kept
+  encoded, since decoding them would change what the URL means.
 
   ## Examples
 
@@ -83,16 +86,27 @@ defmodule ExUtils.URLs do
   iex> normalize_encoding(~s'/files/{draft}|notes"')
   "/files/%7Bdraft%7D%7Cnotes%22"
 
-  iex> normalize_encoding("https://example.com/some%2Fpath")
-  "https://example.com/some/path"
+  iex> normalize_encoding("/search?q=a%26b&page=2")
+  "/search?q=a%26b&page=2"
   ```
   """
   @spec normalize_encoding(t()) :: t()
   def normalize_encoding(url) when is_binary(url) do
-    url
-    |> URI.decode()
-    |> URI.encode()
+    @percent_escape
+    |> Regex.split(url, include_captures: true, trim: true)
+    |> Enum.map_join(&normalize_segment/1)
   end
+
+  defp normalize_segment("%" <> hex = segment) when byte_size(hex) == 2 do
+    case Base.decode16(hex, case: :mixed) do
+      {:ok, <<char>>} -> if URI.char_reserved?(char), do: String.upcase(segment), else: encode_invalid(<<char>>)
+      :error -> encode_invalid(segment)
+    end
+  end
+
+  defp normalize_segment(text), do: encode_invalid(text)
+
+  defp encode_invalid(text), do: URI.encode(text, &URI.char_unescaped?/1)
 
   @doc """
   Extracts one or more valid HTTP/HTTPS URLs from a string.
