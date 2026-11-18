@@ -48,16 +48,14 @@ defmodule ExUtils.MixProject do
   defp deps do
     [
       {:decimal, "~> 2.0 or ~> 3.0", optional: true},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ecto, "~> 3.10", optional: true},
       {:ex_doc, ">= 0.0.0", only: :dev},
       {:inch_ex, ">= 0.0.0", only: :docs},
-      {:sobelow, "~> 0.16", only: :dev},
-      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
+      {:sobelow, "~> 0.16", only: :dev}
     ]
   end
 
-  # Optional dependencies are added to the PLT so Dialyzer can check the
-  # Ecto and Decimal modules. PLTs are cached in priv/plts (git-ignored).
   defp dialyzer do
     [
       plt_add_apps: [:ecto, :decimal],
