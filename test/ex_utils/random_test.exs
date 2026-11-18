@@ -23,9 +23,19 @@ defmodule ExUtils.Tests.Random do
         value = integer(-10, 10)
 
         assert is_integer(value)
-        assert value > -10
+        assert value >= -10
         assert value <= 10
       end)
+    end
+
+    test "includes both bounds" do
+      values = MapSet.new(1..1000, fn _ -> integer(1, 6) end)
+
+      assert values == MapSet.new(1..6)
+    end
+
+    test "returns the bound when min and max are equal" do
+      assert integer(5, 5) == 5
     end
   end
 

@@ -36,7 +36,7 @@ defmodule ExUtils.Random do
   end
 
   @doc """
-  Get a random integer value within the given range.
+  Get a random integer value between `min` and `max` (inclusive).
 
   Also see `integer/1`.
 
@@ -48,8 +48,8 @@ defmodule ExUtils.Random do
   ```
   """
   @spec integer(integer(), integer()) :: integer()
-  def integer(min, max) when is_integer(min) and is_integer(max) and max > min do
-    integer(max - min) + min
+  def integer(min, max) when is_integer(min) and is_integer(max) and max >= min do
+    min + :rand.uniform(max - min + 1) - 1
   end
 
   @doc """

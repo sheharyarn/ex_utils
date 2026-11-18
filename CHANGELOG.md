@@ -16,6 +16,8 @@ All changes to this project are documented in this file.
 
 - Fixed the typespec of `ExUtils.Keywords.to_map/1`, which referenced the
   nonexistent `Map.t/0` type.
+- Fixed `ExUtils.Random.integer/2` never returning `min`. Both bounds are now
+  included, and `min` may equal `max`.
 
 ## [v1.0.0] - 2026-11-03
 
