@@ -49,7 +49,7 @@ defmodule ExUtils.Random do
   """
   @spec integer(integer(), integer()) :: integer()
   def integer(min, max) when is_integer(min) and is_integer(max) and max >= min do
-    min + :rand.uniform(max - min + 1) - 1
+    integer(max - min + 1) + min - 1
   end
 
   @doc """
