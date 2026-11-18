@@ -16,6 +16,7 @@ defmodule ExUtils.MixProject do
       package: package(),
       aliases: aliases(),
       deps: deps(),
+      dialyzer: dialyzer(),
 
       # ExDoc
       name: @name,
@@ -47,10 +48,20 @@ defmodule ExUtils.MixProject do
   defp deps do
     [
       {:decimal, "~> 2.0 or ~> 3.0", optional: true},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ecto, "~> 3.10", optional: true},
       {:ex_doc, ">= 0.0.0", only: :dev},
       {:inch_ex, ">= 0.0.0", only: :docs},
       {:sobelow, "~> 0.16", only: :dev}
+    ]
+  end
+
+  defp dialyzer do
+    [
+      plt_add_apps: [:ecto, :decimal],
+      plt_local_path: "priv/plts",
+      plt_core_path: "priv/plts",
+      flags: [:error_handling]
     ]
   end
 
@@ -62,10 +73,13 @@ defmodule ExUtils.MixProject do
 
   defp aliases do
     [
-      sobelow: ["sobelow --strict --skip --exit"],
+      sobelow: ["sobelow --strict --skip --exit --no-router"],
       quality: [
         "format --check-formatted",
-        "sobelow"
+        "deps.unlock --check-unused",
+        "hex.audit",
+        "sobelow",
+        "dialyzer"
       ]
     ]
   end

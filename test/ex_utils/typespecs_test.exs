@@ -65,7 +65,7 @@ defmodule ExUtils.Tests.Typespecs do
       end
 
       assert_raise ArgumentError, ~r/invalid typespec literal: 1.5/, fn -> from_list([1.5]) end
-      assert_raise ArgumentError, ~r/invalid typespec literal: 5..1/, fn -> from_list([5..1]) end
+      assert_raise ArgumentError, ~r/invalid typespec literal: 5..1/, fn -> from_list([5..1//-1]) end
     end
   end
 end

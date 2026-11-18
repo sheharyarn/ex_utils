@@ -10,12 +10,16 @@ jobs:
   quality:
     runs-on: ubuntu-latest
 
+    env:
+      OTP_VERSION: '29.0'
+      ELIXIR_VERSION: '1.20'
+
     steps:
       - uses: actions/checkout@v5
       - uses: erlef/setup-beam@v1
         with:
-          otp-version: '29.0'
-          elixir-version: '1.20'
+          otp-version: ${{ env.OTP_VERSION }}
+          elixir-version: ${{ env.ELIXIR_VERSION }}
 
       - name: Restore cache
         uses: actions/cache@v5
@@ -27,11 +31,22 @@ jobs:
       - name: Install dependencies
         run: mix deps.get
 
+      - name: Restore Dialyzer PLT cache
+        uses: actions/cache@v5
+        with:
+          path: priv/plts
+          key: ${{ runner.os }}-plt-otp${{ env.OTP_VERSION }}-elixir${{ env.ELIXIR_VERSION }}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-plt-otp${{ env.OTP_VERSION }}-elixir${{ env.ELIXIR_VERSION }}-
+
+      - name: Build Dialyzer PLT
+        run: mix dialyzer --plt
+
       - name: Check code quality
         run: mix quality
 
   tests:
-    runs-on: ubuntu-latest
+    # Pinned: Hex has no OTP 25.0 build for ubuntu-26.04 (ubuntu-latest)
+    runs-on: ubuntu-24.04
 
     strategy:
       fail-fast: false
