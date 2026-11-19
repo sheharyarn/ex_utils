@@ -135,6 +135,14 @@ defmodule ExUtils.Tests.Maps do
              }
     end
 
+    test "atomizes keys of maps inside lists when deep is true" do
+      map = %{"items" => [%{"sku" => "A1"}, "gift", [%{"sku" => "B7"}], ~D[2026-11-19]]}
+
+      assert atomize_keys(map, [:items, :sku], deep: true) == %{
+               items: [%{sku: "A1"}, "gift", [%{sku: "B7"}], ~D[2026-11-19]]
+             }
+    end
+
     test "drops unselected keys when drop is true" do
       map = %{"a" => 1, "b" => 2, 3 => 4, atom: 5}
 
@@ -172,6 +180,14 @@ defmodule ExUtils.Tests.Maps do
       assert stringify_keys(context.atom_map, :all, deep: true) == %{
                "a" => 1,
                "b" => %{"c" => 3, "d" => 4}
+             }
+    end
+
+    test "stringifies keys of maps inside lists when deep is true" do
+      map = %{items: [%{sku: "A1"}, :gift, [%{sku: "B7"}], ~D[2026-11-19]]}
+
+      assert stringify_keys(map, [:items, :sku], deep: true) == %{
+               "items" => [%{"sku" => "A1"}, :gift, [%{"sku" => "B7"}], ~D[2026-11-19]]
              }
     end
 
