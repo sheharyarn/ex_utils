@@ -46,6 +46,9 @@ defmodule ExUtils.URLs do
 
   iex> merge_query("https://app.com/path/?a=1", %{"a" => 0, "b" => "hello"})
   "https://app.com/path/?a=0&b=hello"
+
+  iex> merge_query("/shoes?brand=nike&brand=adidas&page=1", page: 2)
+  "/shoes?brand=nike&brand=adidas&page=2"
   ```
   """
   @spec merge_query(t(), Enumerable.t()) :: t()
@@ -55,8 +58,9 @@ defmodule ExUtils.URLs do
 
     new_query =
       (query || "")
-      |> URI.decode_query()
-      |> Map.merge(params)
+      |> URI.query_decoder()
+      |> Enum.reject(fn {key, _value} -> Map.has_key?(params, key) end)
+      |> Kernel.++(Enum.to_list(params))
       |> URI.encode_query()
       |> case do
         "" -> nil

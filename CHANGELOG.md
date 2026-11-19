@@ -18,6 +18,8 @@ All changes to this project are documented in this file.
   nonexistent `Map.t/0` type.
 - Fixed `ExUtils.Random.integer/2` never returning `min`. Both bounds are now
   included, and `min` may equal `max`.
+- Fixed `ExUtils.URLs.merge_query/2` dropping all but the last value of
+  repeated query parameters, such as `?brand=nike&brand=adidas`.
 
 ## [v1.0.0] - 2026-11-03
 
