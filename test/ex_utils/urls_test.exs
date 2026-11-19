@@ -46,7 +46,16 @@ defmodule ExUtils.Tests.URLs do
       url = "https://app.com/path?a=1&unchanged=yes"
 
       assert merge_query(url, %{a: 0, b: "hello"}) ==
-               "https://app.com/path?a=0&b=hello&unchanged=yes"
+               "https://app.com/path?unchanged=yes&a=0&b=hello"
+    end
+
+    test "preserves repeated parameters that are not overwritten" do
+      assert merge_query("/shoes?brand=nike&brand=adidas&page=1", page: 2) ==
+               "/shoes?brand=nike&brand=adidas&page=2"
+    end
+
+    test "replaces all values of an overwritten repeated parameter" do
+      assert merge_query("/shoes?brand=nike&brand=adidas", brand: "puma") == "/shoes?brand=puma"
     end
 
     test "accepts string parameter keys" do
