@@ -1,6 +1,7 @@
 ExUtils ⚡
 =========
 
+[![Build Status][shield-github]][github-ci]
 [![Coverage Status][shield-inch]][inch-ci]
 [![Downloads][shield-downloads]][hexpm]
 [![Version][shield-version]][hexpm]
@@ -120,8 +121,10 @@ This package is available as open source under the terms of the [MIT License][li
   [docs-typespecs]:   https://hexdocs.pm/ex_utils/ExUtils.Typespecs.html
   [docs-urls]:        https://hexdocs.pm/ex_utils/ExUtils.URLs.html
 
+  [github-ci]:        https://github.com/sheharyarn/ex_utils/actions/workflows/ci.yml
   [inch-ci]:          https://inch-ci.org/github/sheharyarn/ex_utils
 
+  [shield-github]:    https://github.com/sheharyarn/ex_utils/actions/workflows/ci.yml/badge.svg
   [shield-downloads]: https://img.shields.io/hexpm/dt/ex_utils.svg
   [shield-version]:   https://img.shields.io/hexpm/v/ex_utils.svg
   [shield-license]:   https://img.shields.io/hexpm/l/ex_utils.svg
