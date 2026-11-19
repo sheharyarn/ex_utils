@@ -134,7 +134,8 @@ defmodule ExUtils.Maps do
 
   ## Options
 
-  - `:deep` - Perform conversion for keys in nested maps. Defaults to `false`.
+  - `:deep` - Perform conversion for keys in nested maps, including maps inside
+    lists. Defaults to `false`.
   - `:drop` - Drop unconverted keys. Defaults to `false`.
 
   Original, converted string keys are always dropped.
@@ -164,12 +165,7 @@ defmodule ExUtils.Maps do
 
     map
     |> Enum.map(fn {key, value} ->
-      value =
-        if deep? and is_map(value) and not is_struct(value) do
-          atomize_keys(value, keys, opts)
-        else
-          value
-        end
+      value = if deep?, do: convert_nested(value, &atomize_keys(&1, keys, opts)), else: value
 
       cond do
         all? and is_atom(key) -> {key, value}
@@ -200,7 +196,8 @@ defmodule ExUtils.Maps do
 
   ## Options
 
-  - `:deep` - Perform conversion for keys in nested maps. Defaults to `false`.
+  - `:deep` - Perform conversion for keys in nested maps, including maps inside
+    lists. Defaults to `false`.
   - `:drop` - Drop unconverted keys. Defaults to `false`.
 
   Original, converted atom keys are always dropped.
@@ -230,12 +227,7 @@ defmodule ExUtils.Maps do
 
     map
     |> Enum.map(fn {key, value} ->
-      value =
-        if deep? and is_map(value) and not is_struct(value) do
-          stringify_keys(value, keys, opts)
-        else
-          value
-        end
+      value = if deep?, do: convert_nested(value, &stringify_keys(&1, keys, opts)), else: value
 
       cond do
         all? and is_binary(key) -> {key, value}
@@ -249,6 +241,10 @@ defmodule ExUtils.Maps do
     |> Enum.reject(&is_nil/1)
     |> Map.new()
   end
+
+  defp convert_nested(value, convert) when is_map(value) and not is_struct(value), do: convert.(value)
+  defp convert_nested(list, convert) when is_list(list), do: Enum.map(list, &convert_nested(&1, convert))
+  defp convert_nested(value, _convert), do: value
 
   @doc """
   Removes all keys with blank values.

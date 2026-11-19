@@ -16,6 +16,8 @@ All changes to this project are documented in this file.
 
 - Fixed the typespec of `ExUtils.Keywords.to_map/1`, which referenced the
   nonexistent `Map.t/0` type.
+- Fixed `ExUtils.Maps.atomize_keys/3` and `stringify_keys/3` with
+  `deep: true` skipping maps inside lists.
 - Fixed `ExUtils.Random.integer/2` never returning `min`. Both bounds are now
   included, and `min` may equal `max`.
 
